@@ -6,10 +6,10 @@ import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
-	{ path: 'login-component', component: LoginComponent },
-	{ path: 'signup-component', component: SignupComponent },
 	{ path: '', component: HomeComponent },
-	{ path: 'home-component', component: HomeComponent },
+	{ path: 'home', component: HomeComponent },
+	{ path: 'login', component: LoginComponent },
+	{ path: 'signup', component: SignupComponent },
 	{ path: 'about', component: AboutComponent },
 ];
 
