@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { SignupComponent } from './components/signup/signup.component';
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { AboutComponent } from './components/about/about.component';
     SignupComponent,
     HomeComponent,
     AboutComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
