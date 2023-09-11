@@ -19,17 +19,22 @@
 					</span>
 
 					<div class="wrap-input100">
-						<input class="input100" type="text" name="email" placeholder="Email">
+						<input class="input100" type="text" name="email" placeholder="Email" [(ngModel)]="email">
 						<span class="focus-input100"></span>
 					</div>
 
 					<div class="wrap-input100">
-						<input class="input100" type="password" name="pass" placeholder="Password">
+						<input class="input100" type="password" name="pass" placeholder="Password" [(ngModel)]="pass">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100">
+						<input class="input100" type="password" name="pass-check" placeholder="Repeat Password" [(ngModel)]="passCheck">
 						<span class="focus-input100"></span>
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" routerLink="/home">
+						<button class="login100-form-btn" (click)="signUpToLS()">
 							Sign Up
 						</button>
 					</div>

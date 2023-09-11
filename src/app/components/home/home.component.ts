@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-home',
@@ -8,8 +8,14 @@ import { DOCUMENT } from '@angular/common';
 	encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent {
-	constructor() { }
+	constructor(private router: Router) { }
 	backgroundColor = '';
+
+	ngOnInit() {
+		if (localStorage.getItem("savedUser") == null) {
+			this.router.navigate(['/login']);
+		}
+	}
 
 	changeBackground() {
 		var deg = Math.floor(Math.random() * 360);
