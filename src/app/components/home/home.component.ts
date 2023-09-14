@@ -11,12 +11,6 @@ export class HomeComponent {
 	constructor(private router: Router) { }
 	backgroundColor = '';
 
-	ngOnInit() {
-		if (localStorage.getItem("savedUser") == null) {
-			this.router.navigate(['/login']);
-		}
-	}
-
 	changeBackground() {
 		var deg = Math.floor(Math.random() * 360);
 		var gradient = "linear-gradient(" + deg + "deg, " + "#" + createHex() + ", " + "#" + createHex() + ")";

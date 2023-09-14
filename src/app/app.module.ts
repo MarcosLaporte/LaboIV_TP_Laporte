@@ -9,6 +9,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { ErrorComponent } from './components/error/error.component';
+import { AccountComponent } from './components/account/account.component';
 
 @NgModule({
   declarations: [
@@ -18,11 +19,12 @@ import { ErrorComponent } from './components/error/error.component';
     HomeComponent,
     AboutComponent,
     ErrorComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-	FormsModule
+		FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

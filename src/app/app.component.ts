@@ -1,10 +1,20 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+	selector: 'app-root',
+	templateUrl: './app.component.html',
+	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'TP_Laporte';
+	constructor(private router: Router) { }
+	title = 'TP_Laporte';
+
+	accountBtn() {
+		let ls = localStorage.getItem('savedUser');
+		if (ls != null)
+			this.router.navigate(['/account']);
+		else
+			this.router.navigate(['/login']);
+	}
 }
