@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/classes/user';
 import Swal from 'sweetalert2';
+import { uniqueNamesGenerator, adjectives, animals} from 'unique-names-generator';
 import Validator from 'validator';
 
 @Component({
@@ -14,9 +15,23 @@ export class SignupComponent {
 	email = "";
 	pass = "";
 	passCheck = "";
+	username = "";
 
 	constructor(private router: Router) { }
 
+	newUsername(){
+		let tmpUsername:string;
+		do {
+			tmpUsername = uniqueNamesGenerator({
+			dictionaries: [adjectives, animals],
+			separator: '-',
+			length: 2,
+			style: 'upperCase',
+			});
+	} while(SignupComponent.usernameExists(tmpUsername));
+
+		this.username = tmpUsername;
+	}
 
 	signUpToLS() {
 		const validations = [
@@ -36,6 +51,10 @@ export class SignupComponent {
 				condition: this.pass !== this.passCheck,
 				message: "Passwords aren't the same!",
 			},
+			{
+				condition: this.username == "",
+				message: 'Generate a username first!'
+			},
 		];
 
 		for (const validation of validations) {
@@ -49,7 +68,7 @@ export class SignupComponent {
 			}
 		}
 
-		User.saveUserToLS(this.email, this.pass);
+		User.saveUserToLS(this.email, this.pass, this.username);
 		this.router.navigate(['/home']);
 	}
 
@@ -57,14 +76,16 @@ export class SignupComponent {
 		let lsUser: User | null = this.readUserFromLS();
 		return lsUser !== null && lsUser.email == email;
 	} */
+	
+	static usernameExists(username: string) {
+		let lsUser: User | null = this.readUserFromLS();
+		return lsUser !== null && lsUser.username == username;
+	}
 
 	static readUserFromLS() {
 		let ls: string | null = localStorage.getItem("savedUser");
-		if (ls !== null) {
-			let user: User = JSON.parse(ls);
-			console.log(user);
-			return user;
-		}
+		if (ls !== null)
+			return JSON.parse(ls);
 
 		return null;
 	}

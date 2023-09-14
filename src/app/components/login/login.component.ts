@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/app/classes/user';
+import { User } from '../../classes/user';
 import Swal from 'sweetalert2';
 import Validator from 'validator';
 
@@ -11,15 +11,11 @@ import Validator from 'validator';
 	styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-	email = "";
-	pass = "";
+	email: string = "";
+	pass: string = "";
 
 	constructor(private router: Router) { };
 
-	ngOnInit() {
-		console.log(localStorage.getItem("savedUser"));
-	}
-	
 	signInToLS() {
 		if (!Validator.isEmail(this.email) || this.pass.length < 5) {
 			Swal.fire({
@@ -29,9 +25,8 @@ export class LoginComponent {
 			});
 			return;
 		}
-		
-		User.saveUserToLS(this.email, this.pass);
-		console.log(localStorage.getItem("savedUser"));
+
+		User.saveUserToLS(this.email, this.pass, "-");
 		this.router.navigate(['/home']);
 	}
 }

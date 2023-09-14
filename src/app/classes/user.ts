@@ -3,14 +3,15 @@ export class User {
 	email = "";
 	pass = "";
 
-	constructor(email:string, pass:string){
+	constructor(email:string, pass:string, username:string){
 		this.email = email;
 		this.pass = pass;
-		// this.username = generateUsername("-", 2);
+		this.username = username;
 	}
 
-	static saveUserToLS(email:string, pass:string) {
-		let newUser: User = new User(email, pass);
+	static saveUserToLS(email:string, pass:string, username:string) {
+		let newUser: User = new User(email, pass, username);
 		localStorage.setItem("savedUser", JSON.stringify(newUser));
 	}
+
 }
