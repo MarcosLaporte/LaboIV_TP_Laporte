@@ -1,125 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Sala de Juegos - Home</title>
-	<!-- Bootstrap icons-->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
-</head>
-
-<body>
-	<!-- Responsive navbar-->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!-- Header-->
+<div class="main" [style.background]="backgroundColor">
+	<header class="py-5">
 		<div class="container px-lg-5">
-			<a class="navbar-brand" routerLink="/home">Arcade</a>
-				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active" aria-current="page" routerLink="/home">Home</a></li>
-					<li class="nav-item"><a class="nav-link" routerLink="/about">About</a></li>
-					<li class="nav-item"><a class="nav-link" routerLink="/login">Account</a></li>
-				</ul>
+			<div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+				<div class="m-4 m-lg-5">
+					<h1 class="display-5 fw-bold">Ready to play?</h1>
+					<p class="fs-4">Immerse yourself into the world of gaming and leave all your problems behind.
+					</p>
+					<button class="btn btn-primary btn-lg" (click)="changeBackground()">Call to action</button>
+				</div>
+			</div>
 		</div>
-	</nav>
-	<!-- Header-->
-	<div class="main" [style.background]="backgroundColor">
-		<header class="py-5">
-			<div class="container px-lg-5">
-				<div class="p-4 p-lg-5 bg-light rounded-3 text-center">
-					<div class="m-4 m-lg-5">
-						<h1 class="display-5 fw-bold">Ready to play?</h1>
-						<p class="fs-4">Immerse yourself into the world of gaming and leave all your problems behind.
-						</p>
-						<button class="btn btn-primary btn-lg" (click)="changeBackground()">Call to action</button>
+	</header>
+	<!-- Page Content-->
+	<section class="pt-4">
+		<div class="container px-lg-5">
+			<!-- Page Features-->
+			<div class="row gx-lg-5">
+				<div class="col-lg-6 col-xxl-4 mb-5">
+					<div class="card bg-light border-0 h-100">
+						<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+							<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
+								<i class="bi bi-gem"></i>
+							</div>
+							<h2 class="fs-4 fw-bold">Game No.1</h2>
+							<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
+								commodi culpa accusamus neque fugit magni.</p>
+						</div>
 					</div>
 				</div>
-			</div>
-		</header>
-		<!-- Page Content-->
-		<section class="pt-4">
-			<div class="container px-lg-5">
-				<!-- Page Features-->
-				<div class="row gx-lg-5">
-					<div class="col-lg-6 col-xxl-4 mb-5">
-						<div class="card bg-light border-0 h-100">
-							<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-								<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
-									<i class="bi bi-gem"></i>
-								</div>
-								<h2 class="fs-4 fw-bold">Game No.1</h2>
-								<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-									commodi culpa accusamus neque fugit magni.</p>
+				<div class="col-lg-6 col-xxl-4 mb-5">
+					<div class="card bg-light border-0 h-100">
+						<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+							<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
+								<i class="bi bi-tornado"></i>
 							</div>
+							<h2 class="fs-4 fw-bold">Game No.2</h2>
+							<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
+								commodi culpa accusamus neque fugit magni.</p>
 						</div>
 					</div>
-					<div class="col-lg-6 col-xxl-4 mb-5">
-						<div class="card bg-light border-0 h-100">
-							<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-								<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
-									<i class="bi bi-tornado"></i>
-								</div>
-								<h2 class="fs-4 fw-bold">Game No.2</h2>
-								<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-									commodi culpa accusamus neque fugit magni.</p>
+				</div>
+				<div class="col-lg-6 col-xxl-4 mb-5">
+					<div class="card bg-light border-0 h-100">
+						<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+							<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
+								<i class="bi bi-card-heading"></i>
 							</div>
+							<h2 class="fs-4 fw-bold">Game No.3</h2>
+							<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
+								commodi culpa accusamus neque fugit magni.</p>
 						</div>
 					</div>
-					<div class="col-lg-6 col-xxl-4 mb-5">
-						<div class="card bg-light border-0 h-100">
-							<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-								<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
-									<i class="bi bi-card-heading"></i>
-								</div>
-								<h2 class="fs-4 fw-bold">Game No.3</h2>
-								<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-									commodi culpa accusamus neque fugit magni.</p>
+				</div>
+				<div class="col-lg-6 col-xxl-4 mb-5">
+					<div class="card bg-light border-0 h-100">
+						<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+							<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
+								<i class="bi bi-discord"></i>
 							</div>
+							<h2 class="fs-4 fw-bold">Game No.4</h2>
+							<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
+								commodi culpa accusamus neque fugit magni.</p>
 						</div>
 					</div>
-					<div class="col-lg-6 col-xxl-4 mb-5">
-						<div class="card bg-light border-0 h-100">
-							<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-								<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
-									<i class="bi bi-discord"></i>
-								</div>
-								<h2 class="fs-4 fw-bold">Game No.4</h2>
-								<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-									commodi culpa accusamus neque fugit magni.</p>
+				</div>
+				<div class="col-lg-6 col-xxl-4 mb-5">
+					<div class="card bg-light border-0 h-100">
+						<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+							<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
+								<i class="bi bi-code"></i>
 							</div>
+							<h2 class="fs-4 fw-bold">Game No.5</h2>
+							<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
+								commodi culpa accusamus neque fugit magni.</p>
 						</div>
 					</div>
-					<div class="col-lg-6 col-xxl-4 mb-5">
-						<div class="card bg-light border-0 h-100">
-							<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-								<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
-									<i class="bi bi-code"></i>
-								</div>
-								<h2 class="fs-4 fw-bold">Game No.5</h2>
-								<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-									commodi culpa accusamus neque fugit magni.</p>
+				</div>
+				<div class="col-lg-6 col-xxl-4 mb-5">
+					<div class="card bg-light border-0 h-100">
+						<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+							<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
+								<i class="bi bi-dice-6"></i>
 							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 col-xxl-4 mb-5">
-						<div class="card bg-light border-0 h-100">
-							<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-								<div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
-									<i class="bi bi-dice-6"></i>
-								</div>
-								<h2 class="fs-4 fw-bold">Game No.6</h2>
-								<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-									commodi culpa accusamus neque fugit magni.
-								</p>
-							</div>
+							<h2 class="fs-4 fw-bold">Game No.6</h2>
+							<p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus
+								commodi culpa accusamus neque fugit magni.
+							</p>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
-	</div>
-	<!-- Bootstrap core JS-->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+		</div>
+	</section>
+</div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
-</body>
-
-</html>
+<router-outlet></router-outlet>
