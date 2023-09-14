@@ -11,8 +11,8 @@ export class AppComponent {
 	title = 'TP_Laporte';
 
 	accountBtn() {
-		let ls = localStorage.getItem('savedUser');
-		if (ls != null)
+		let ls = localStorage.getItem('loggedUser');
+		if (ls !== null)
 			this.router.navigate(['/account']);
 		else
 			this.router.navigate(['/login']);

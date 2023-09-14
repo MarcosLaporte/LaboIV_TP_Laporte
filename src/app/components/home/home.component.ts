@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-home',
@@ -8,9 +7,9 @@ import { Router } from '@angular/router';
 	encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent {
-	constructor(private router: Router) { }
-	backgroundColor = '';
+	constructor() { }
 
+	backgroundColor = '';
 	changeBackground() {
 		var deg = Math.floor(Math.random() * 360);
 		var gradient = "linear-gradient(" + deg + "deg, " + "#" + createHex() + ", " + "#" + createHex() + ")";

@@ -17,7 +17,7 @@ export class AccountComponent {
 	ngOnInit() {
 		let usrname = "USERNAME_NOT_FOUND";
 		let email = "EMAIL_ADD_NOT_FOUND";
-		let ls = localStorage.getItem("savedUser");
+		let ls = localStorage.getItem("loggedUser");
 		if (ls !== null) {
 			let obj = JSON.parse(ls);
 			usrname = obj.username;
@@ -39,7 +39,7 @@ export class AccountComponent {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire('Logged out!', '', 'success')
-				localStorage.removeItem("savedUser");
+				localStorage.removeItem("loggedUser");
 				this.router.navigate(['/home']);
 			}
 		});

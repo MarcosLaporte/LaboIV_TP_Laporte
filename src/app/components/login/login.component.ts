@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../../classes/user';
 import Swal from 'sweetalert2';
-import Validator from 'validator';
+import { SignupComponent } from '../signup/signup.component';
 
 @Component({
 	selector: 'app-login',
@@ -17,7 +16,8 @@ export class LoginComponent {
 	constructor(private router: Router) { };
 
 	signInToLS() {
-		if (!Validator.isEmail(this.email) || this.pass.length < 5) {
+		let user = LoginComponent.getUser(this.email, this.pass);
+		if (user == null) {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
@@ -26,7 +26,20 @@ export class LoginComponent {
 			return;
 		}
 
-		User.saveUserToLS(this.email, this.pass, "-");
+		localStorage.setItem("loggedUser", JSON.stringify(user));
 		this.router.navigate(['/home']);
+	}
+
+	static getUser(email: string, pass: string) {
+		if (SignupComponent.emailExists(email)) {
+			let array = User.getUsers();
+			for (let i = 0; i < array.length; i++) {
+				const usr: User = array[i];
+				if (usr.email == email && usr.pass == pass)
+					return usr;
+			}
+		}
+
+		return null;
 	}
 }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/classes/user';
 import Swal from 'sweetalert2';
-import { uniqueNamesGenerator, adjectives, animals} from 'unique-names-generator';
+import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
 import Validator from 'validator';
 
 @Component({
@@ -19,18 +19,26 @@ export class SignupComponent {
 
 	constructor(private router: Router) { }
 
-	newUsername(){
-		let tmpUsername:string;
+	newUsername() {
+		let username: string;
 		do {
-			tmpUsername = uniqueNamesGenerator({
-			dictionaries: [adjectives, animals],
-			separator: '-',
-			length: 2,
-			style: 'upperCase',
+			username = uniqueNamesGenerator({
+				dictionaries: [adjectives, animals],
+				separator: '-',
+				length: 2,
+				style: 'upperCase',
 			});
-	} while(SignupComponent.usernameExists(tmpUsername));
+		} while (SignupComponent.usernameExists(username));
 
-		this.username = tmpUsername;
+		this.username = username;
+	}
+
+	static saveUserToLS(email: string, pass: string, username: string) {
+		let arrayUsers: Array<User> = User.getUsers();
+
+		let newUser: User = new User(email, pass, username);
+		arrayUsers.push(newUser);
+		localStorage.setItem("users", JSON.stringify([arrayUsers]));
 	}
 
 	signUpToLS() {
@@ -39,10 +47,10 @@ export class SignupComponent {
 				condition: !Validator.isEmail(this.email),
 				message: 'Enter a valid email address.',
 			},
-			/* {
+			{
 				condition: SignupComponent.emailExists(this.email),
-				message: 'This email address already exists!',
-			}, */
+				message: 'Another account is using the same email address.',
+			},
 			{
 				condition: this.pass.length < 5,
 				message: 'Password must be at least 5 characters long.',
@@ -68,26 +76,29 @@ export class SignupComponent {
 			}
 		}
 
-		User.saveUserToLS(this.email, this.pass, this.username);
+		SignupComponent.saveUserToLS(this.email, this.pass, this.username);
 		this.router.navigate(['/home']);
 	}
 
-	/* static emailExists(email: string) {
-		let lsUser: User | null = this.readUserFromLS();
-		return lsUser !== null && lsUser.email == email;
-	} */
-	
+	static emailExists(email: string) {
+		let arrayUsers = User.getUsers();
+		for (let i = 0; i < arrayUsers.length; i++) {
+			const usr = arrayUsers[i];
+			if (usr.email == email)
+				return true;
+		}
+
+		return false;
+	}
+
 	static usernameExists(username: string) {
-		let lsUser: User | null = this.readUserFromLS();
-		return lsUser !== null && lsUser.username == username;
+		let arrayUsers = User.getUsers();
+		for (let i = 0; i < arrayUsers.length; i++) {
+			const user = arrayUsers[i];
+			if (user.username == username)
+				return true;
+		}
+
+		return false;
 	}
-
-	static readUserFromLS() {
-		let ls: string | null = localStorage.getItem("savedUser");
-		if (ls !== null)
-			return JSON.parse(ls);
-
-		return null;
-	}
-
 }
