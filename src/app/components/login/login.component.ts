@@ -42,4 +42,14 @@ export class LoginComponent {
 
 		return null;
 	}
+
+	quickFill() {
+		let users = User.getUsers();
+		let rndmNum = Math.floor(Math.random() * users.length);
+		let rndmUser = users[rndmNum];
+		if (rndmUser !== null) {
+			this.email = rndmUser.email;
+			this.pass = rndmUser.pass;
+		}
+	}
 }
