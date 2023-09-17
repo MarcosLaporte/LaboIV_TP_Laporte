@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../classes/user';
 import Swal from 'sweetalert2';
-import { SignupComponent } from '../signup/signup.component';
+import { UtilitiesService } from 'src/app/utilities.service';
 
 @Component({
 	selector: 'app-login',
@@ -15,8 +15,8 @@ export class LoginComponent {
 
 	constructor(private router: Router) { };
 
-	signInToLS() {
-		let user = LoginComponent.getUser(this.email, this.pass);
+	signIn() {
+		let user = LoginComponent.searchUser(this.email, this.pass);
 		if (user == null) {
 			Swal.fire({
 				icon: 'error',
@@ -27,12 +27,13 @@ export class LoginComponent {
 		}
 
 		localStorage.setItem("loggedUser", JSON.stringify(user));
+		UtilitiesService.saveUserLog(user);
 		this.router.navigate(['/home']);
 	}
 
-	static getUser(email: string, pass: string) {
-		if (SignupComponent.emailExists(email)) {
-			let array = User.getUsers();
+	static searchUser(email: string, pass: string) {
+		if (UtilitiesService.emailExists(email)) {
+			let array = UtilitiesService.getUsers();
 			for (let i = 0; i < array.length; i++) {
 				const usr: User = array[i];
 				if (usr.email == email && usr.pass == pass)
@@ -44,7 +45,7 @@ export class LoginComponent {
 	}
 
 	quickFill() {
-		let users = User.getUsers();
+		let users = UtilitiesService.getUsers();
 		let rndmNum = Math.floor(Math.random() * users.length);
 		let rndmUser = users[rndmNum];
 		if (rndmUser !== null) {

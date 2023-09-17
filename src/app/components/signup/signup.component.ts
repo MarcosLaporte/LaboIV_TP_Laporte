@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/classes/user';
+import { UtilitiesService } from 'src/app/utilities.service';
 import Swal from 'sweetalert2';
 import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
 import Validator from 'validator';
@@ -28,27 +29,26 @@ export class SignupComponent {
 				length: 2,
 				style: 'upperCase',
 			});
-		} while (SignupComponent.usernameExists(username));
+		} while (UtilitiesService.usernameExists(username));
 
 		this.username = username;
 	}
 
-	static saveUserToLS(email: string, pass: string, username: string) {
-		let arrayUsers: Array<User> = User.getUsers();
+	static saveUserToLS(newUser: User) {
+		let arrayUsers: Array<User> = UtilitiesService.getUsers();
 
-		let newUser: User = new User(email, pass, username);
 		arrayUsers.push(newUser);
 		localStorage.setItem("users", JSON.stringify([arrayUsers]));
 	}
 
-	signUpToLS() {
+	signUp() {
 		const validations = [
 			{
 				condition: !Validator.isEmail(this.email),
 				message: 'Enter a valid email address.',
 			},
 			{
-				condition: SignupComponent.emailExists(this.email),
+				condition: UtilitiesService.emailExists(this.email),
 				message: 'Another account is using the same email address.',
 			},
 			{
@@ -76,29 +76,9 @@ export class SignupComponent {
 			}
 		}
 
-		SignupComponent.saveUserToLS(this.email, this.pass, this.username);
+		let newUser = new User(this.email, this.pass, this.username);
+		SignupComponent.saveUserToLS(newUser);
+		UtilitiesService.saveUserLog(newUser);
 		this.router.navigate(['/home']);
-	}
-
-	static emailExists(email: string) {
-		let arrayUsers = User.getUsers();
-		for (let i = 0; i < arrayUsers.length; i++) {
-			const usr = arrayUsers[i];
-			if (usr.email == email)
-				return true;
-		}
-
-		return false;
-	}
-
-	static usernameExists(username: string) {
-		let arrayUsers = User.getUsers();
-		for (let i = 0; i < arrayUsers.length; i++) {
-			const user = arrayUsers[i];
-			if (user.username == username)
-				return true;
-		}
-
-		return false;
 	}
 }
