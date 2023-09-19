@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { User } from './classes/user';
-import { Log } from './classes/log';
-import { formatDate } from '@angular/common';
 
 @Injectable({
 	providedIn: 'root'
@@ -40,9 +38,9 @@ export class UtilitiesService {
 		return false;
 	}
 
-	static getLogs(): Array<[User, string]> {
+	static getLogs(): Array<[string, string]> {
 		let lsLogs = localStorage.getItem("logs");
-		let arrayLogs: Array<[User, string]> = [];
+		let arrayLogs: Array<[string, string]> = [];
 		if (lsLogs !== null)
 			arrayLogs = JSON.parse(lsLogs);
 
@@ -50,12 +48,12 @@ export class UtilitiesService {
 	}
 
 	static saveUserLog(user: User) {
-		let arrayLogs: Array<[User, string]> = UtilitiesService.getLogs();
+		let arrayLogs: Array<[string, string]> = UtilitiesService.getLogs();
 
 		let dateStr = (new Date()).toLocaleString();
-		let newLog: [User, string] = [user, dateStr];
-		arrayLogs.push(newLog);
+		let newLog: [string, string] = [user.email, dateStr];
 		
-		localStorage.setItem("logs", JSON.stringify([arrayLogs]));
+		arrayLogs.push(newLog);
+		localStorage.setItem("logs", JSON.stringify(arrayLogs));
 	}
 }
