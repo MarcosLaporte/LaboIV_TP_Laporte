@@ -1,7 +1,7 @@
 export class User {
-	username = "";
-	email = "";
-	pass = "";
+	username: string;
+	email: string;
+	pass: string;
 
 	constructor(email: string, pass: string, username: string) {
 		this.email = email;
