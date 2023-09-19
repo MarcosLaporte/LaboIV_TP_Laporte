@@ -13517,3 +13517,12 @@ fieldset:disabled .btn {
 	width: 4rem;
 	font-size: 2rem;
 }
+
+.game_container {
+	overflow: hidden;
+}
+.game_container img {
+	height: 55%;
+	width: auto;
+	object-fit: cover;
+}
