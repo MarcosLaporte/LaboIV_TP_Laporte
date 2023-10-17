@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../../classes/user';
-import Swal from 'sweetalert2';
-import { UtilitiesService } from 'src/app/utilities.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
 	selector: 'app-login',
@@ -11,46 +9,18 @@ import { UtilitiesService } from 'src/app/utilities.service';
 })
 export class LoginComponent {
 	email: string = "";
-	pass: string = "";
+	password: string = "";
 
-	constructor(private router: Router) { };
+	constructor(private router: Router, private accountService: AccountService) { };
 
 	signIn() {
-		let user = LoginComponent.searchUser(this.email, this.pass);
-		if (user == null) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Sorry, your data was incorrect. Check again.'
-			});
-			return;
-		}
-
-		localStorage.setItem("loggedUser", JSON.stringify(user));
-		UtilitiesService.saveUserLog(user);
-		this.router.navigate(['/home']);
+		const userExists = this.accountService.signIn(this.email, this.password);
+		userExists.then((existe) => { if (existe) this.router.navigate(['/home']) })
 	}
 
-	static searchUser(email: string, pass: string) {
-		if (UtilitiesService.emailExists(email)) {
-			let array = UtilitiesService.getUsers();
-			for (let i = 0; i < array.length; i++) {
-				const usr: User = array[i];
-				if (usr.email == email && usr.pass == pass)
-					return usr;
-			}
-		}
-
-		return null;
-	}
-
-	quickFill() {
-		let users = UtilitiesService.getUsers();
-		let rndmNum = Math.floor(Math.random() * users.length);
-		let rndmUser = users[rndmNum];
-		if (rndmUser !== null) {
-			this.email = rndmUser.email;
-			this.pass = rndmUser.pass;
-		}
+	async quickFill() {
+		this.email = "marcoslaporte2015@gmail.com";
+		this.password = "UTNFRA";
+		this.signIn();
 	}
 }

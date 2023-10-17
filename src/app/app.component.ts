@@ -7,12 +7,12 @@ import { Router } from '@angular/router';
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	constructor(private router: Router) { }
+	constructor(private router: Router) {}
 	title = 'TP_Laporte';
 
 	accountBtn() {
-		let ls = localStorage.getItem('loggedUser');
-		if (ls !== null)
+		let ss = sessionStorage.getItem('loggedUser');
+		if (ss !== null)
 			this.router.navigate(['/account']);
 		else
 			this.router.navigate(['/login']);

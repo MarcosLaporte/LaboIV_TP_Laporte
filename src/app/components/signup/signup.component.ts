@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/classes/user';
-import { UtilitiesService } from 'src/app/utilities.service';
+import { AccountService } from 'src/app/services/account.service';
 import Swal from 'sweetalert2';
 import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
 import Validator from 'validator';
@@ -14,49 +14,46 @@ import Validator from 'validator';
 
 export class SignupComponent {
 	email = "";
-	pass = "";
+	password = "";
 	passCheck = "";
 	username = "";
+	admin = false;
 
-	constructor(private router: Router) { }
+	constructor(private router: Router, private accountService: AccountService) { }
 
 	newUsername() {
-		let username: string;
-		do {
-			username = uniqueNamesGenerator({
-				dictionaries: [adjectives, animals],
-				separator: '-',
-				length: 2,
-				style: 'upperCase',
+		let username: string = uniqueNamesGenerator({
+			dictionaries: [adjectives, animals],
+			separator: '-',
+			length: 2,
+			style: 'upperCase',
+		});
+
+		this.accountService.usernameExists(username)
+			.then((existe) => {
+				if (existe)
+					this.newUsername();
+				else
+					this.username = username;
 			});
-		} while (UtilitiesService.usernameExists(username));
-
-		this.username = username;
 	}
 
-	static saveUserToLS(newUser: User) {
-		let arrayUsers: Array<User> = UtilitiesService.getUsers();
-
-		arrayUsers.push(newUser);
-		localStorage.setItem("users", JSON.stringify([arrayUsers]));
-	}
-
-	signUp() {
+	async signUp() {
 		const validations = [
+			{
+				condition: await this.accountService.emailExists(this.email),
+				message: 'Another account is using the same email address.',
+			},
 			{
 				condition: !Validator.isEmail(this.email),
 				message: 'Enter a valid email address.',
 			},
 			{
-				condition: UtilitiesService.emailExists(this.email),
-				message: 'Another account is using the same email address.',
-			},
-			{
-				condition: this.pass.length < 5,
+				condition: this.password.length < 5,
 				message: 'Password must be at least 5 characters long.',
 			},
 			{
-				condition: this.pass !== this.passCheck,
+				condition: this.password !== this.passCheck,
 				message: "Passwords aren't the same!",
 			},
 			{
@@ -65,20 +62,15 @@ export class SignupComponent {
 			},
 		];
 
-		for (const validation of validations) {
-			if (validation.condition) {
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: validation.message,
-				});
+		for (const val of validations) {
+			if (val.condition) {
+				Swal.fire('Oops...', val.message, 'error');
 				return;
 			}
 		}
 
-		let newUser = new User(this.email, this.pass, this.username);
-		SignupComponent.saveUserToLS(newUser);
-		UtilitiesService.saveUserLog(newUser);
+		this.accountService.saveUser(this.email, this.password, this.username, this.admin);
+		this.accountService.signIn(this.email, this.password)
 		this.router.navigate(['/home']);
 	}
 }
