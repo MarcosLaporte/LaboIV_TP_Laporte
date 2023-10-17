@@ -4819,6 +4819,16 @@ fieldset:disabled .btn {
 	color: var(--bs-card-color);
 }
 
+.card-body:hover {
+	cursor: pointer;
+	filter: brightness(105%);
+	transform: scale(1.025);
+	color: #003666;
+	transition: all .5s ease;
+	-webkit-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.75);
+}
+
 .card-title {
 	margin-bottom: var(--bs-card-title-spacer-y);
 }
@@ -13518,10 +13528,10 @@ fieldset:disabled .btn {
 	font-size: 2rem;
 }
 
-.game_container {
+.game-container {
 	overflow: hidden;
 }
-.game_container img {
+.game-container img {
 	height: 55%;
 	width: auto;
 	object-fit: cover;

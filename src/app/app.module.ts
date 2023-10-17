@@ -10,23 +10,28 @@ import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { ErrorComponent } from './components/error/error.component';
 import { AccountComponent } from './components/account/account.component';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    SignupComponent,
-    HomeComponent,
-    AboutComponent,
-    ErrorComponent,
-    AccountComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-		FormsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		LoginComponent,
+		SignupComponent,
+		HomeComponent,
+		AboutComponent,
+		ErrorComponent,
+		AccountComponent,
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		FormsModule,
+		provideFirebaseApp(() => initializeApp(environment.firebase)),
+		provideFirestore(() => getFirestore())
+	],
+	providers: [],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
