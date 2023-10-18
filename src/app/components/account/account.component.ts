@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { User } from 'src/app/classes/user';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
 	selector: 'app-account',
@@ -12,16 +13,15 @@ export class AccountComponent {
 	username: string = "";
 	email: string = "";
 
-	constructor(private router: Router) { }
+	constructor(private router: Router, private accService: AccountService) { }
 
 	ngOnInit() {
 		let usrname = "USERNAME_NOT_FOUND";
 		let email = "EMAIL_ADD_NOT_FOUND";
-		let ss = sessionStorage.getItem('loggedUser');
-		if (ss !== null) {
-			let user = JSON.parse(ss) as User;
-			usrname = user.username;
-			email = user.email;
+		const ssUser = this.accService.getUserInSession();
+		if (ssUser !== undefined) {
+			usrname = ssUser.username;
+			email = ssUser.email;
 		}
 
 		this.username = usrname;
@@ -39,7 +39,7 @@ export class AccountComponent {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire('Logged out!', '', 'success')
-				sessionStorage.removeItem("loggedUser");
+				sessionStorage.removeItem('loggedUser');
 				this.router.navigate(['/home']);
 			}
 		});

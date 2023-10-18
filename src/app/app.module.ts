@@ -15,6 +15,7 @@ import { environment } from '../environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { GamesModule } from './modules/games/games.module';
 import { HttpClientModule } from '@angular/common/http';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
 	declarations: [
@@ -25,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
 		AboutComponent,
 		ErrorComponent,
 		AccountComponent,
+		ChatComponent,
 	],
 	imports: [
 		BrowserModule,

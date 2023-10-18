@@ -9,6 +9,15 @@ const userPath = 'users';
 })
 export class AccountService {
 	constructor(private dbService: DatabaseService) { }
+	
+	getUserInSession(): User | undefined {
+		let ss = sessionStorage.getItem('loggedUser');
+		if (ss !== null) {
+			return JSON.parse(ss) as User;
+		}
+
+		return undefined;
+	}
 
 	async signIn(email: string, pass: string) {
 		const user = await this.searchUser(email, pass);
