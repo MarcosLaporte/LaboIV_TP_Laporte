@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { User } from 'src/app/classes/user';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services/account.service';
@@ -16,16 +15,16 @@ export class AccountComponent {
 	constructor(private router: Router, private accService: AccountService) { }
 
 	ngOnInit() {
-		let usrname = "USERNAME_NOT_FOUND";
-		let email = "EMAIL_ADD_NOT_FOUND";
-		const ssUser = this.accService.getUserInSession();
-		if (ssUser !== undefined) {
-			usrname = ssUser.username;
-			email = ssUser.email;
+		let usrAux = "USERNAME_NOT_FOUND";
+		let emAux = "EMAIL_ADD_NOT_FOUND";
+		const tmpUser = this.accService.getUserInSession();
+		if (tmpUser !== undefined) {
+			usrAux = tmpUser.username;
+			emAux = tmpUser.email;
 		}
 
-		this.username = usrname;
-		this.email = email;
+		this.username = usrAux;
+		this.email = emAux;
 	}
 
 	signOut() {
@@ -38,8 +37,8 @@ export class AccountComponent {
 			showLoaderOnConfirm: true,
 		}).then((result) => {
 			if (result.isConfirmed) {
-				Swal.fire('Logged out!', '', 'success')
-				sessionStorage.removeItem('loggedUser');
+				Swal.fire('Logged out!', '', 'success');
+				this.accService.logOutFromSession();
 				this.router.navigate(['/home']);
 			}
 		});

@@ -13,23 +13,23 @@ import { DatePipe } from '@angular/common';
 })
 export class ChatComponent {
 	messages: Array<Message> = [];
-	userInSession: User | undefined;
 	msgText: string = "";
 
 	constructor(private accService: AccountService, private dbService: DatabaseService) {}
 
 	ngOnInit() {
-		this.userInSession = this.accService.getUserInSession();
 		this.dbService.traerNuevosMensajes(this.messages);
 	}
 	
 	usrMsgStyle(user: User) {
-		return user.email === this.userInSession?.email ? 'background-color: #48b0f7; color: #fff;' : '';
+		const tmpUser = this.accService.getUserInSession();
+		return user.email === tmpUser?.email ? 'background-color: #48b0f7; color: #fff;' : '';
 	}
 
 	sendMessage() {
-		if (this.userInSession && this.msgText !== ""){
-			const msg = new Message(this.userInSession, this.msgText);
+		const tmpUser = this.accService.getUserInSession();
+		if (tmpUser && this.msgText !== ""){
+			const msg = new Message(tmpUser, this.msgText);
 			this.dbService.agregarDatos('messages', msg);
 			this.msgText = "";
 		}
