@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-sm bg-light" [style.display]="navbarDisplaySty">
+	<div class="container px-lg-5">
+		<a class="navbar-brand" (click)="newGame()">New game</a>
+		<!-- <div class="switch">
+			<input id="language-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" [(ngModel)]="langToggle"
+				(ngModelChange)="onToggleChange()">
+			<label for="language-toggle"></label>
+			<span class="on">EN</span>
+			<span class="off">ES</span>
+		</div> -->
+		<div class="score">
+			<label class="navbar-brand-text">Score: {{score}}</label>
+		</div>
+	</div>
+</nav>
+
+<header class="py-5" [style.display]="headerDisplaySty">
+	<div class="container px-lg-5">
+		<div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+			<div class="m-4 m-lg-5">
+				<h1 class="display-5 fw-bold">HANGMAN</h1>
+				<p class="fs-4">Guess the word one letter at a time before running out of lives.</p>
+				<button class="btn btn-primary btn-lg" (click)="newGame()">Start!</button>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- Header-->
+<div class="main pb-5">
+	<!-- Page Content-->
+	<section class="pt-4">
+		<div class="game-container container px-sm-0 py-2 gap-3" [style.display]="gameDisplaySty">
+			<div class="drawing py-5 ps-0 pe-5">
+				<img [src]="setImage()">
+			</div>
+			<div class="guess text-center justify-content-center align-items-center">
+				<label>{{wordDisplayVal}}</label>
+			</div>
+			<div class="wrong-guesses justify-content-center align-items-center">
+				<ul id="wrong-guesses-ul">
+					<label for="wrong-guesses-ul" class="fw-bold">Wrong guesses:</label>
+					<li class="list-inline-item mx-1" *ngFor="let letter of wrongGuesses">{{letter}}</li>
+				</ul>
+			</div>
+			<div class="d-grid keyboard-container">
+				<app-keyboard (keyEvent)="checkLetter($event)"></app-keyboard>
+			</div>
+		</div>
+	</section>
+</div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<router-outlet></router-outlet>

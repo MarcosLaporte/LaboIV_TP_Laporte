@@ -13,6 +13,8 @@ import { AccountComponent } from './components/account/account.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { GamesModule } from './modules/games/games.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
 	declarations: [
@@ -28,8 +30,10 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 		BrowserModule,
 		AppRoutingModule,
 		FormsModule,
+		HttpClientModule,
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
-		provideFirestore(() => getFirestore())
+		provideFirestore(() => getFirestore()),
+		GamesModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent]
