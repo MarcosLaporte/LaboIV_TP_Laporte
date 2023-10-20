@@ -1,35 +1,26 @@
-<div class="limiter">
-	<div class="container-login100">
-		<div class="wrap-login100">
+<div class="main min-vh-100 text-center bg-custom-gradient">
+	<form class="form-signin bg-light bg-opacity-50 rounded">
+		<h1 class="h3 mb-3 font-weight-normal">Member Login</h1>
 
-			<form class="login100-form validate-form">
-				<span class="login100-form-title">
-					Member Login
-				</span>
+		<label for="inputEmail" class="sr-only">Email address</label>
+		<input type="email" id="inputEmail" class="form-control" placeholder="Email address" [(ngModel)]="email"
+			name="email" required autofocus>
 
-				<div class="wrap-input100">
-					<input class="input100" type="text" placeholder="Email" [(ngModel)]="email" name="email">
-					<span class="focus-input100"></span>
-				</div>
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input type="password" id="inputPassword" class="form-control" placeholder="Password" [(ngModel)]="password"
+			name="password" required>
+			
+		<button class="btn btn-lg btn-primary btn-block" type="submit" (click)="signIn()">Sign in</button>
 
-				<div class="wrap-input100">
-					<input class="input100" type="password" placeholder="Password" [(ngModel)]="password" name="password">
-					<span class="focus-input100"></span>
-				</div>
-
-				<div class="container-login100-form-btn">
-					<button class="login100-form-btn" (click)="signIn()">
-						Login
-					</button>
-				</div>
-
-				<div class="txt2-div flex-wrap justify-content-between">
-					<span class="txt2 text-start text-decoration-underline" routerLink="/signup">Create your Account</span>
-					<span class="txt2 text-end text-decoration-underline" (click)="quickFill()">Quick fill</span>
-				</div>
-			</form>
-		</div>
-	</div>
+		<ul class="nav justify-content-center">
+			<li class="nav-item">
+				<a class="nav-link active text-decoration-underline" href="/signup">Create your Account</a>
+			</li>
+			<li class="nav-item">
+				<span class="nav-link active text-decoration-underline" (click)="quickFill()" role="button">Quick fill</span>
+			</li>
+		</ul>
+	</form>
 </div>
 
 <router-outlet></router-outlet>

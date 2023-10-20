@@ -37,7 +37,7 @@ export class SignupComponent {
 					this.username = username;
 			});
 	}
-
+	
 	async signUp() {
 		const validations = [
 			{

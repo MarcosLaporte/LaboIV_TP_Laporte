@@ -1,57 +1,41 @@
-<div class="limiter">
-	<div class="container-login100">
-		<div class="wrap-login100">
+<div class="main min-vh-100 text-center bg-custom-gradient">
+	<form class="form-signin bg-light bg-opacity-50 rounded">
+		<h1 class="h3 mb-3 font-weight-normal">New account</h1>
 
-			<form class="login100-form validate-form">
-				<span class="login100-form-title">
-					New Account
-				</span>
+		<label for="inputEmail" class="sr-only">Email address</label>
+		<input type="email" id="inputEmail" class="form-control m-auto w-75" placeholder="Email address" [(ngModel)]="email"
+			name="email" required autofocus>
 
-				<div class="wrap-input100">
-					<input class="input100" type="text" name="email" placeholder="Email" [(ngModel)]="email">
-					<span class="focus-input100"></span>
-				</div>
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input type="password" id="inputPassword" class="form-control m-auto w-75" placeholder="Password" [(ngModel)]="password"
+			name="password" required>
 
-				<div class="wrap-input100">
-					<input class="input100" type="password" name="password" placeholder="Password" [(ngModel)]="password">
-					<span class="focus-input100"></span>
-				</div>
+		<label for="inputPassCheck" class="sr-only">Password</label>
+		<input type="password" id="inputPassCheck" class="form-control m-auto w-75" placeholder="Repeat password"
+			[(ngModel)]="passCheck" name="passCheck" required>
 
-				<div class="wrap-input100">
-					<input class="input100" type="password" name="password-check" placeholder="Repeat Password"
-						[(ngModel)]="passCheck">
-					<span class="focus-input100"></span>
-				</div>
-
-				<div class="wrap-input100">
-					<input class="input100" type="text" name="username" placeholder="Your username will show here" readonly
-						[(ngModel)]="username">
-					<div class="new-username-btn">
-						<i class="bi bi-arrow-repeat" id="username" aria-hidden="true" (click)="newUsername()"></i>
-					</div>
-				</div>
-
-				<div class="container-login100-form-btn">
-					<button class="login100-form-btn" (click)="signUp()">
-						Sign Up
-					</button>
-				</div>
-
-				<div class="row">
-					<div class="col-6 d-flex flex-wrap justify-content-start align-items-center">
-						<a class="txt2" routerLink="/login">
-							Already a member?
-							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-						</a>
-					</div>
-					<div class="col-6 d-flex flex-wrap justify-content-end align-items-center">
-						<label for="admin" class="txt2">Admin account?</label>
-						<input type="checkbox" id="admin" [value]="admin">
-					</div>
-				</div>
-			</form>
+		<div class="input-group m-auto w-75">
+			<input readonly type="text" class="form-control inputUsername" placeholder="Generate a username →"
+				aria-label="Generate a username →" aria-describedby="basic-addon2" [(ngModel)]="username" name="username"
+				required>
+			<div class="input-group-append inputUsername">
+				<button class="btn btn-outline-secondary rounded-top-0" type="button" (click)="newUsername()"><span class="bi bi-arrow-repeat"></span></button>
+			</div>
 		</div>
-	</div>
+
+		<button class="btn btn-lg btn-primary btn-block m-auto w-75" type="submit" (click)="signUp()">Sign Up</button>
+
+		<div class="form-check form-switch pt-2">
+			<input class="form-check-input" type="checkbox" value="" id="adminCheck" checked [(ngModel)]="admin" name="admin">
+			<label class="form-check-label" for="adminCheck">Admin account?</label>
+		</div>
+		<div class="nav justify-content-center">
+			<div class="nav-item">
+				<a class="nav-link active text-decoration-underline" href="/login">Already a member?</a>
+			</div>
+		</div>
+
+	</form>
 </div>
 
 <router-outlet></router-outlet>
