@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -6,7 +6,6 @@ import { AccountService } from 'src/app/services/account.service';
 	selector: 'app-games',
 	templateUrl: './games.component.html',
 	styleUrls: ['./games.component.css'],
-	encapsulation: ViewEncapsulation.None,
 })
 export class GamesComponent {
 	constructor(private router: Router, private accService: AccountService) { }
@@ -17,6 +16,4 @@ export class GamesComponent {
 		else
 			this.router.navigate(['/login']);
 	}
-
-
 }

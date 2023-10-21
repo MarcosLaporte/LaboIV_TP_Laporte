@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-sm bg-light">
+	<div class="container px-lg-5">
+		<a class="navbar-brand">New game</a>
+		<div class="score">
+			<label class="navbar-brand-text">Score: {{score}}</label>
+		</div>
+	</div>
+</nav>
+
+<header class="py-5" [style.display]="headerDisplaySty">
+	<div class="container px-lg-5">
+		<div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+			<div class="m-4 m-lg-5">
+				<h1 class="display-5 fw-bold">HIGHER OR LOWER</h1>
+				<p class="fs-4">Guess if the next card will be higher, lower or the same value as the current one.</p>
+				<button class="btn btn-primary btn-lg" (click)="newGame()">Start!</button>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- Header-->
+<div class="main pb-5">
+	<!-- Page Content-->
+	<section class="pt-4">
+		<div [style.display]="gameDisplaySty" class="game-container container px-sm-0 py-2 gap-3 justify-items-center">
+			<div class="deck">
+				<img [src]="cardImg">
+			</div>
+
+			<div class="btn-group">
+				<button (click)="checkGuess($event)" value="-1" class="btn-primary">Lower</button>
+				<button (click)="checkGuess($event)" value="0" class="btn-primary">Same</button>
+				<button (click)="checkGuess($event)" value="1" class="btn-primary">Higher</button>
+			</div>
+		</div>
+	</section>
+</div>
+<ng-toast></ng-toast>

@@ -6,19 +6,23 @@ import { GamesComponent } from './games.component';
 import { HangmanComponent } from '../../components/games/hangman/hangman.component';
 import { FormsModule } from '@angular/forms';
 import { KeyboardComponent } from 'src/app/components/games/hangman/keyboard/keyboard.component';
+import { HiOrLoComponent } from 'src/app/components/games/hi-or-lo/hi-or-lo.component';
+import { NgToastModule } from 'ng-angular-popup';
 
 
 @NgModule({
-  declarations: [
-    GamesComponent,
-    HangmanComponent,
-		KeyboardComponent
-  ],
-  imports: [
-    CommonModule,
-    GamesRoutingModule,
-		FormsModule
-  ],
+	declarations: [
+		GamesComponent,
+		HangmanComponent,
+		KeyboardComponent,
+		HiOrLoComponent,
+	],
+	imports: [
+		CommonModule,
+		GamesRoutingModule,
+		FormsModule,
+		NgToastModule
+	],
 	exports: [
 		GamesComponent
 	]
