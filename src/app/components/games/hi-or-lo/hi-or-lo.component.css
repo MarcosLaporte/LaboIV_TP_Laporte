@@ -1,3 +1,17 @@
 .justify-items-center {
 	justify-items: center !important;
 }
+
+.deck img {
+	height: 315px;
+	width: 185px;
+}
+
+.deck #nextCard {
+	transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+.flipped {
+  transform: rotateY(180deg);
+}

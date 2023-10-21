@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm bg-light">
 	<div class="container px-lg-5">
-		<a class="navbar-brand">New game</a>
+		<a class="navbar-brand" (click)="newGame()">New game</a>
 		<div class="score">
 			<label class="navbar-brand-text">Score: {{score}}</label>
 		</div>
@@ -22,17 +22,17 @@
 <div class="main pb-5">
 	<!-- Page Content-->
 	<section class="pt-4">
-		<div [style.display]="gameDisplaySty" class="game-container container px-sm-0 py-2 gap-3 justify-items-center">
+		<div [style.display]="gameDisplaySty" class="game-container container px-sm-0 py-2 justify-items-center">
 			<div class="deck">
-				<img [src]="cardImg">
+				<img id="currentCard" [src]="cardImg" class="mx-2">
+				<img id="nextCard" src="../../../../assets/card-back.jpg" class="mx-2" [class]="flipCard ? 'flipped' : ''">
 			</div>
 
-			<div class="btn-group">
-				<button (click)="checkGuess($event)" value="-1" class="btn-primary">Lower</button>
-				<button (click)="checkGuess($event)" value="0" class="btn-primary">Same</button>
-				<button (click)="checkGuess($event)" value="1" class="btn-primary">Higher</button>
+			<label for="value-btns">Next card will be:</label>
+			<div class="btn-group" id="value-btns">
+				<button (click)="checkGuess($event)" value="-1" class="btn-danger px-3 mx-1 fs-5 rounded-3">LOWER</button>
+				<button (click)="checkGuess($event)" value="1" class="btn-success px-3 mx-1 fs-5 rounded-3">HIGHER</button>
 			</div>
 		</div>
 	</section>
 </div>
-<ng-toast></ng-toast>

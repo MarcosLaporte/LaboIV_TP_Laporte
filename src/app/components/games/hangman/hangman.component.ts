@@ -32,15 +32,7 @@ export class HangmanComponent {
 		this.wordDisplayVal = '';
 		this.wrongGuesses = [];
 
-		Swal.fire({
-			imageUrl: '../../../assets/loader.gif',
-			imageWidth: 300,
-			imageHeight: 300,
-			imageAlt: 'loader',
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
-
+		Swal.showLoading();
 		await this.getWordAndDef();
 
 		Swal.close();
@@ -82,6 +74,7 @@ export class HangmanComponent {
 				title: 'You won!',
 				text: `With only ${this.wrongGuesses.length} wrong guesses.`,
 				confirmButtonText: 'New game',
+				focusConfirm: true,
 				showCancelButton: true,
 				cancelButtonText: 'Home'
 			}).then((res) => {
