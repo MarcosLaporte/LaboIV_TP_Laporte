@@ -1,13 +1,6 @@
 <nav class="navbar navbar-expand-sm bg-light" [style.display]="navbarDisplaySty">
 	<div class="container px-lg-5">
-		<a class="navbar-brand" (click)="newGame()">New game</a>
-		<!-- <div class="switch">
-			<input id="language-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" [(ngModel)]="langToggle"
-				(ngModelChange)="onToggleChange()">
-			<label for="language-toggle"></label>
-			<span class="on">EN</span>
-			<span class="off">ES</span>
-		</div> -->
+		<span class="navbar-brand" (click)="newGame()" role="button">New game</span>
 		<div class="score">
 			<label class="navbar-brand-text">Score: {{score}}</label>
 		</div>
@@ -36,19 +29,22 @@
 			<div class="guess text-center justify-content-center align-items-center">
 				<label>{{wordDisplayVal}}</label>
 			</div>
-			<div class="wrong-guesses justify-content-center align-items-center">
-				<ul id="wrong-guesses-ul">
-					<label for="wrong-guesses-ul" class="fw-bold">Wrong guesses:</label>
-					<li class="list-inline-item mx-1" *ngFor="let letter of wrongGuesses">{{letter}}</li>
-				</ul>
+			<div class="r2-c2" [style.display]="gameDisplaySty">
+				<div class="wrong-guesses">
+					<ul id="wrong-guesses-ul">
+						<label for="wrong-guesses-ul" class="fw-bold">Wrong guesses:</label>
+						<li class="list-inline-item mx-1" *ngFor="let letter of wrongGuesses">{{letter}}</li>
+					</ul>
+				</div>
+				<div class="definition col2">
+					<p><b>Definition</b>: {{definition}}</p>
+				</div>
 			</div>
 			<div class="d-grid keyboard-container">
-				<app-keyboard (keyEvent)="checkLetter($event)"></app-keyboard>
+				<app-keyboard [newGame]="newGameFlag" (keyEvent)="checkLetter($event)"></app-keyboard>
 			</div>
 		</div>
 	</section>
 </div>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <router-outlet></router-outlet>
