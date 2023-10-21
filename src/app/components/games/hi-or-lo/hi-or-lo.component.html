@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-sm bg-light">
+<nav class="navbar navbar-expand-sm bg-light" [style.display]="navbarDisplaySty">
 	<div class="container px-lg-5">
-		<a class="navbar-brand" (click)="newGame()">New game</a>
+		<span class="navbar-brand" (click)="newGame()" role="button">New game</span>
 		<div class="score">
 			<label class="navbar-brand-text">Score: {{score}}</label>
 		</div>
