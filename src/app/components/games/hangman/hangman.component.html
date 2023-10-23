@@ -1,11 +1,4 @@
-<nav class="navbar navbar-expand-sm bg-light" [style.display]="navbarDisplaySty">
-	<div class="container px-lg-5">
-		<span class="navbar-brand" (click)="newGame()" role="button">New game</span>
-		<div class="score">
-			<label class="navbar-brand-text">Score: {{score}}</label>
-		</div>
-	</div>
-</nav>
+<app-games-nav [style.display]="navbarDisplaySty" (newGameEvent)="newGame()"></app-games-nav>
 
 <header class="py-5" [style.display]="headerDisplaySty">
 	<div class="container px-lg-5">

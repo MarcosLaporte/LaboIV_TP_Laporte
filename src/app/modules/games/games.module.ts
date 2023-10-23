@@ -7,6 +7,8 @@ import { HangmanComponent } from '../../components/games/hangman/hangman.compone
 import { FormsModule } from '@angular/forms';
 import { KeyboardComponent } from 'src/app/components/games/hangman/keyboard/keyboard.component';
 import { HiOrLoComponent } from 'src/app/components/games/hi-or-lo/hi-or-lo.component';
+import { TriviaComponent } from 'src/app/components/games/trivia/trivia.component';
+import { GamesNavComponent } from 'src/app/components/games/games-nav/games-nav.component';
 
 @NgModule({
 	declarations: [
@@ -14,6 +16,8 @@ import { HiOrLoComponent } from 'src/app/components/games/hi-or-lo/hi-or-lo.comp
 		HangmanComponent,
 		KeyboardComponent,
 		HiOrLoComponent,
+		TriviaComponent,
+		GamesNavComponent,
 	],
 	imports: [
 		CommonModule,
