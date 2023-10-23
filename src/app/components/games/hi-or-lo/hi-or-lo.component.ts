@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardsApiService } from 'src/app/services/games/cards-api.service';
 import Swal from 'sweetalert2';
+import { Toast } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-hi-or-lo',
@@ -9,18 +10,10 @@ import Swal from 'sweetalert2';
 	styleUrls: ['./hi-or-lo.component.css']
 })
 export class HiOrLoComponent {
-	Toast = Swal.mixin({
-		toast: true,
-		position: 'top-right',
-		iconColor: 'white',
-		showConfirmButton: false,
-		timer: 1500,
-	})
-
 	score: number = 0;
 	cardImg: string = "../../../../assets/card-joker.jpg";
 	currentCardVal = 0;
-	cardsLeft: number = 2; //TODO: change to 50
+	cardsLeft: number = 50;
 
 	constructor(private cardsService: CardsApiService, private router: Router) { }
 
@@ -38,7 +31,7 @@ export class HiOrLoComponent {
 		Swal.showLoading();
 		await this.cardsService.shuffleDeck();
 		this.score = 0;
-		this.cardsLeft = 2;
+		this.cardsLeft = 50;
 
 		await this.cardsService.getNextCard()
 			.then((data) => {
@@ -65,11 +58,11 @@ export class HiOrLoComponent {
 
 					if (cardDifVal < 0 && $event.target.value == -1 || cardDifVal > 0 && $event.target.value == 1) {
 						this.score++;
-						this.Toast.fire({ icon: 'success', title: 'Correct!', background: '#a5dc86' });
+						Toast.fire({ icon: 'success', title: 'Correct!', background: '#a5dc86' });
 					} else if (cardDifVal == 0) {
-						this.Toast.fire({ icon: 'warning', title: 'Tie!', background: '#3fc3ee' });
+						Toast.fire({ icon: 'warning', title: 'Tie!', background: '#3fc3ee' });
 					} else {
-						this.Toast.fire({ icon: 'error', title: 'Wrong!', background: '#f27474' });
+						Toast.fire({ icon: 'error', title: 'Wrong!', background: '#f27474' });
 					}
 
 					this.currentCardVal = nextCardVal;

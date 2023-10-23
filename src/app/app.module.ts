@@ -16,6 +16,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { GamesModule } from './modules/games/games.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ChatComponent } from './chat/chat.component';
+import { TriviaComponent } from './components/games/trivia/trivia.component';
 
 @NgModule({
 	declarations: [
@@ -27,6 +28,7 @@ import { ChatComponent } from './chat/chat.component';
 		ErrorComponent,
 		AccountComponent,
 		ChatComponent,
+		TriviaComponent,
 	],
 	imports: [
 		BrowserModule,
