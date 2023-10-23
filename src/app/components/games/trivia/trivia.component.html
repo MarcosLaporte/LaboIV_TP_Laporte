@@ -21,18 +21,19 @@
 <!-- Header-->
 <div class="main pb-5">
 	<!-- Page Content-->
-	<section class="container px-lg-5">
-		<div [style.display]="gameDisplaySty" class="game-container container px-sm-0 py-2 justify-items-center gap-3">
-			<div class="question-card">
-				<h2 class="card m-2 py-5 px-4 bg-light">{{currentTrivia?.question}}</h2>
-			</div>
-			<div class="answers">
-				<ul class="list-group">
-					<li class="card mx-5 my-2 px-3 list-group-item-dark list-group-item-action" *ngFor="let ans of currentTrivia?.answers" (click)="pickAns(ans.answer)">
-						{{ans.answer}}
-					</li>
-				</ul>
+	<div [style.display]="gameDisplaySty" class="container m-5 px-5">
+		<div class="row col-12">
+			<h1 class="fw-bold bg-light py-4 px-2 border border-primary rounded">{{currentTrivia?.question}}</h1>
+
+			<div *ngFor="let ans of currentTrivia?.answers; index as i" class="answers" (click)="pickAns(ans.answer)">
+				<input type="radio" name="box" [id]="(i+1)" class="form-check-input">
+				<label [for]="(i+1)" [class]="'box i_' + (i+1)">
+					<div class="course">
+						<span class="circle"></span>
+						<span class="subject">{{ans.answer}}</span>
+					</div>
+				</label>
 			</div>
 		</div>
-	</section>
+	</div>
 </div>
