@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardsApiService } from 'src/app/services/games/cards-api.service';
 import Swal from 'sweetalert2';
-import { Toast } from 'src/environments/environment';
+import { Loader, Toast } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-hi-or-lo',
@@ -28,7 +28,7 @@ export class HiOrLoComponent {
 		this.gameDisplaySty = 'grid';
 
 		this.flipCard = true;
-		Swal.showLoading();
+		Loader.fire({title: 'Loading deck of cards...'});
 		await this.cardsService.shuffleDeck();
 		this.score = 0;
 		this.cardsLeft = 50;
@@ -36,7 +36,7 @@ export class HiOrLoComponent {
 		await this.cardsService.getNextCard()
 			.then((data) => {
 				this.cardImg = data.cards[0].image;
-				Swal.close();
+				Loader.close();
 				this.currentCardVal = this.cardsService.getCardValue(data.cards[0].value);
 				this.flipCard = false;
 			});
@@ -44,7 +44,7 @@ export class HiOrLoComponent {
 
 	async checkGuess($event: any) {
 		this.flipCard = true;
-		Swal.showLoading();
+		Loader.fire({title: 'Checking values...'});
 
 		await this.cardsService.getNextCard()
 			.then((data) => {
@@ -53,7 +53,7 @@ export class HiOrLoComponent {
 				if (this.cardsLeft >= 0) {
 					const nextCardVal = this.cardsService.getCardValue(data.cards[0].value);
 					const cardDifVal = nextCardVal - this.currentCardVal;
-					Swal.close();
+					Loader.close();
 					this.flipCard = false;
 
 					if (cardDifVal < 0 && $event.target.value == -1 || cardDifVal > 0 && $event.target.value == 1) {
@@ -80,7 +80,8 @@ export class HiOrLoComponent {
 			confirmButtonText: 'New game',
 			focusConfirm: true,
 			showCancelButton: true,
-			cancelButtonText: 'Home'
+			cancelButtonText: 'Home',
+			allowOutsideClick: false
 		}).then((res) => {
 			if (res.isConfirmed)
 				this.newGame();

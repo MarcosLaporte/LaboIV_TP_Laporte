@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { WordsApiService } from 'src/app/services/games/words-api.service';
+import { Loader } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -32,10 +33,10 @@ export class HangmanComponent {
 		this.wordDisplayVal = '';
 		this.wrongGuesses = [];
 
-		Swal.showLoading();
+		Loader.fire({title: 'Loading new word...'});
 		await this.getWordAndDef();
+		Loader.close();
 
-		Swal.close();
 		this.newGameFlag = !this.newGameFlag;
 	}
 
@@ -72,14 +73,14 @@ export class HangmanComponent {
 			Swal.fire({
 				icon: 'success',
 				title: 'You won!',
-				text: `With only ${this.wrongGuesses.length} wrong guesses.`,
+				text: `With ${this.wrongGuesses.length} wrong guesses.`,
 				confirmButtonText: 'New game',
 				focusConfirm: true,
 				showCancelButton: true,
 				cancelButtonText: 'Home'
-			}).then((res) => {
+			}).then(async (res) => {
 				if (res.isConfirmed)
-					this.newGame();
+					await this.newGame();
 				else
 					this.router.navigate(['/home']);
 			});
@@ -114,9 +115,9 @@ export class HangmanComponent {
 					confirmButtonText: 'New game',
 					showCancelButton: true,
 					cancelButtonText: 'Home'
-				}).then((res) => {
+				}).then(async (res) => {
 					if (res.isConfirmed)
-						this.newGame();
+						await this.newGame();
 					else
 						this.router.navigate(['/home']);
 				});
