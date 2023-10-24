@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 	providedIn: 'root'
 })
 export class TriviaApiService {
-	readonly openTDB: string = 'https://opentdb.com/api.php?amount=10&type=multiple&encode=base64&difficulty=';
+	readonly openTDB: string = 'https://opentdb.com/api.php?amount=50&type=multiple&encode=base64&difficulty=';
 	constructor() { }
 
 	async getQuiz(difficulty: string) {

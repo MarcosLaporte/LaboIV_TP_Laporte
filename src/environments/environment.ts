@@ -17,4 +17,12 @@ export const Toast = Swal.mixin({
 	iconColor: 'white',
 	showConfirmButton: false,
 	timer: 1500,
-})
+});
+
+export const Loader = Swal.mixin({
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+		didOpen: () => {
+      Swal.showLoading();
+    }
+});

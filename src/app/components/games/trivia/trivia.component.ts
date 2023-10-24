@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import arrayShuffle from 'array-shuffle';
 import { TriviaObj } from 'src/app/classes/trivia-obj';
 import { TriviaApiService } from 'src/app/services/games/trivia-api.service';
-import { Toast } from 'src/environments/environment';
+import { Loader, Toast } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -30,10 +30,45 @@ export class TriviaComponent {
 		this.gameDisplaySty = 'grid';
 
 		this.triviaArr = [];
+		this.questionNum = 0;
+		this.score = 0;
 		await this.chooseDifficulty();
 		Swal.fire(`Difficulty: ${this.difficulty}`, '', 'info');
-		Swal.showLoading();
 
+		await this.newQuiz();
+		await this.nextQuestion();
+	}
+
+	async chooseDifficulty() {
+		await Swal.fire({
+			title: 'Choose the difficulty of the questions.',
+			showConfirmButton: true,
+			confirmButtonText: 'Easy',
+			confirmButtonColor: 'gray',
+			focusConfirm: false,
+			
+			showDenyButton: true,
+			denyButtonText: 'Medium',
+			denyButtonColor: 'green',
+			
+			showCancelButton: true,
+			cancelButtonText: 'Hard',
+			cancelButtonColor: 'red',
+			
+			showLoaderOnConfirm: true,
+			allowOutsideClick: false,
+		}).then((result) => {
+			if (result.isConfirmed)
+				this.difficulty = 'easy';
+			else if (result.isDenied)
+				this.difficulty = 'medium';
+			else
+				this.difficulty = 'hard';
+		});
+	}
+
+	async newQuiz() {
+		Loader.fire({title: 'Getting quiz...'});
 		await this.triviaService.getQuiz(this.difficulty)
 			.then((data) => {
 				for (const trivia of data.results) {
@@ -47,56 +82,42 @@ export class TriviaComponent {
 					this.triviaArr.push(new TriviaObj(atob(trivia.question), answers, trivia.difficulty, trivia.category));
 				}
 			});
-
-		this.nextQuestion();
-		Swal.close();
-	}
-
-	async chooseDifficulty() {
-		await Swal.fire({
-			title: 'Choose the difficulty of the questions.',
-			showConfirmButton: true,
-			confirmButtonText: 'Easy',
-			confirmButtonColor: 'gray',
-			focusConfirm: false,
-			showDenyButton: true,
-			denyButtonText: 'Medium',
-			denyButtonColor: 'green',
-			showCancelButton: true,
-			cancelButtonText: 'Hard',
-			cancelButtonColor: 'red',
-			showLoaderOnConfirm: true,
-			allowOutsideClick: false,
-		}).then((result) => {
-			if (result.isConfirmed)
-				this.difficulty = 'easy';
-			else if (result.isDenied)
-				this.difficulty = 'medium';
-			else
-				this.difficulty = 'hard';
-		});
-	}
-
-	nextQuestion() {
-		this.questionNum++;
-		this.currentTrivia = this.triviaArr[this.questionNum];
-			// TODO: No limit to the questions. Play until wrong answer
-
+		Loader.close();
 	}
 
 	pickAns(answer: string) {
-		const correctAnswer = this.getCorrectAnswer(this.currentTrivia);
+		const correctAnswer = TriviaComponent.getCorrectAnswer(this.currentTrivia);
 		if (answer == correctAnswer) {
 			this.score++;
 			Toast.fire({ icon: 'success', title: 'Correct!', background: '#a5dc86' });
+			this.nextQuestion();
 		} else {
-			Toast.fire({ icon: 'error', title: 'Wrong!', background: '#f27474' });
+			Swal.fire({
+				icon: 'error',
+				title: 'You lost!',
+				text: `Right answer was: '${correctAnswer}'.`,
+				confirmButtonText: 'New game',
+				showCancelButton: true,
+				cancelButtonText: 'Home',
+				allowOutsideClick: false
+			}).then((res) => {
+				if (res.isConfirmed)
+					this.newGame();
+				else
+					this.router.navigate(['/home']);
+			});
 		}
-		
-		this.nextQuestion();
 	}
 
-	private getCorrectAnswer(trivia: TriviaObj): string {
+	async nextQuestion() {
+		this.currentTrivia = this.triviaArr[this.questionNum];
+		this.questionNum++;
+		if (this.questionNum > 0 && this.questionNum % 50 == 0)
+			await this.newQuiz(); // A Maximum of 50 Questions can be retrieved per call to the API.
+
+	}
+
+	private static getCorrectAnswer(trivia: TriviaObj): string {
 		for (const ans of trivia.answers) {
 			if (ans.correct)
 				return ans.answer;

@@ -1,4 +1,4 @@
-<app-games-nav [style.display]="navbarDisplaySty" (newGameEvent)="newGame()"></app-games-nav>
+<app-games-nav [style.display]="navbarDisplaySty" (newGameEvent)="newGame()" [score]="score"></app-games-nav>
 
 <header class="py-5" [style.display]="headerDisplaySty">
 	<div class="container px-lg-5">
@@ -18,8 +18,8 @@
 		<div class="row col-12">
 			<h1 class="fw-bold bg-light py-4 px-2 border border-primary rounded">{{currentTrivia?.question}}</h1>
 
-			<div *ngFor="let ans of currentTrivia?.answers; index as i" class="answers" (click)="pickAns(ans.answer)">
-				<input type="radio" name="box" [id]="(i+1)" class="form-check-input">
+			<div *ngFor="let ans of currentTrivia?.answers; index as i" class="answers">
+				<input type="radio" name="box" [id]="(i+1)" class="form-check-input" (click)="pickAns(ans.answer)">
 				<label [for]="(i+1)" [class]="'box i_' + (i+1)">
 					<div class="course">
 						<span class="circle"></span>
