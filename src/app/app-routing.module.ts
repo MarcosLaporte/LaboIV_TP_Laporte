@@ -14,7 +14,7 @@ const routes: Routes = [
 	{ path: 'signup', component: SignupComponent },
 	{ path: 'about', component: AboutComponent },
 	{ path: 'account', component: AccountComponent },
-	{ path: 'games', loadChildren: () => import('./modules/games/games.module').then(m => m.GamesModule) },
+	{ path: 'games', loadChildren: () => import('./games-module/games.module').then(m => m.GamesModule) },
 	{ path: '**', component: ErrorComponent },
 ];
 

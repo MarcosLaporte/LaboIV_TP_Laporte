@@ -13,7 +13,7 @@ import { AccountComponent } from './components/account/account.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { GamesModule } from './modules/games/games.module';
+import { GamesModule } from './games-module/games.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ChatComponent } from './chat/chat.component';
 

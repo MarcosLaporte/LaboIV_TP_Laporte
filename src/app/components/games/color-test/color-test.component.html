@@ -1,0 +1,24 @@
+<app-games-nav [style.display]="navbarDisplaySty" (newGameEvent)="newGame()" [score]="score"></app-games-nav>
+
+<header class="py-5" [style.display]="headerDisplaySty">
+	<div class="container px-lg-5">
+		<div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+			<div class="m-4 m-lg-5">
+				<h1 class="display-5 fw-bold">COLOR TEST</h1>
+				<p class="fs-4">Test your vision and find the circle of a different color!</p>
+				<button class="btn btn-primary btn-lg" (click)="newGame()">Start!</button>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- Header-->
+
+<div [style.display]="gameDisplaySty" class="game-container container-fluid px-lg-5">
+	<table class="mx-auto">
+		<tr class="row" *ngFor="let row of [0, 1, 2]">
+			<td class="col cell p-0 m-1" *ngFor="let col of [0, 1, 2]">
+				<button class="rounded-circle w-100 h-100 border-0" [style.background-color]="currentPalette[row * 3 + col]"  (click)="pickColor(currentPalette[row * 3 + col])"></button>
+			</td>
+		</tr>
+	</table>
+</div>

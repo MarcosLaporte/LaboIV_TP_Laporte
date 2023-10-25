@@ -56,6 +56,7 @@ export class TriviaComponent {
 			cancelButtonColor: 'red',
 			
 			showLoaderOnConfirm: true,
+			allowEscapeKey: false,
 			allowOutsideClick: false,
 		}).then((result) => {
 			if (result.isConfirmed)
@@ -99,6 +100,7 @@ export class TriviaComponent {
 				confirmButtonText: 'New game',
 				showCancelButton: true,
 				cancelButtonText: 'Home',
+				allowEscapeKey: false,
 				allowOutsideClick: false
 			}).then((res) => {
 				if (res.isConfirmed)

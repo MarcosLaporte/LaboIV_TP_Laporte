@@ -36,8 +36,6 @@ export class ChatComponent {
 	}
 
 	keyPress($event: any) {
-		console.log($event);
-		
 		if ($event.key === 'Enter')
 			this.sendMessage();
 	}
