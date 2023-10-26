@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services/account.service';
+import { getUserInSession } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-account',
@@ -17,7 +18,7 @@ export class AccountComponent {
 	ngOnInit() {
 		let usrAux = "USERNAME_NOT_FOUND";
 		let emAux = "EMAIL_ADD_NOT_FOUND";
-		const tmpUser = this.accService.getUserInSession();
+		const tmpUser = getUserInSession();
 		if (tmpUser !== undefined) {
 			usrAux = tmpUser.username;
 			emAux = tmpUser.email;
@@ -34,7 +35,7 @@ export class AccountComponent {
 			showCancelButton: false,
 			confirmButtonText: 'Yes',
 			denyButtonText: 'No',
-			showLoaderOnConfirm: true,
+			showLoaderOnConfirm: false,
 		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire('Logged out!', '', 'success');

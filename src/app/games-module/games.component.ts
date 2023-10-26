@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountService } from 'src/app/services/account.service';
+import { getUserInSession } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-games',
@@ -8,10 +8,10 @@ import { AccountService } from 'src/app/services/account.service';
 	styleUrls: ['./games.component.css'],
 })
 export class GamesComponent {
-	constructor(private router: Router, private accService: AccountService) { }
+	constructor(private router: Router) { }
 
 	selecGame(game: string) {
-		if (this.accService.getUserInSession() !== undefined)
+		if (getUserInSession() !== undefined)
 			this.router.navigate(['games/' + game]);
 		else
 			this.router.navigate(['/login']);

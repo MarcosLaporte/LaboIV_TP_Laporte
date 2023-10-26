@@ -8,21 +8,11 @@ const userPath = 'users';
 	providedIn: 'root'
 })
 export class AccountService {
-	private userInSession: User | undefined;
 
-	constructor(private dbService: DatabaseService) {
-		const ss = sessionStorage.getItem('loggedUser');
-		if (ss !== null)
-			this.userInSession = JSON.parse(ss) as User;
-	}
-
-	getUserInSession(): User | undefined {
-		return this.userInSession;
-	}
+	constructor(private dbService: DatabaseService) { }
 
 	logOutFromSession() {
 		sessionStorage.removeItem('loggedUser');
-		this.userInSession = undefined;
 	}
 
 	async signIn(email: string, pass: string) {
@@ -34,7 +24,6 @@ export class AccountService {
 
 		this.dbService.agregarDatos('logs', { email: email, admin: user.admin, log: new Date() });
 		sessionStorage.setItem('loggedUser', JSON.stringify(user));
-		this.userInSession = user;
 		return true;
 	}
 

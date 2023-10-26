@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountService } from './services/account.service';
-import { User } from './classes/user';
+import { getUserInSession } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-root',
@@ -9,17 +8,18 @@ import { User } from './classes/user';
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	constructor(private router: Router, private accService: AccountService) {}
+	constructor(private router: Router) {}
 	title = 'TP_Laporte';
 
 	getUser(){
-		return this.accService.getUserInSession();
+		return getUserInSession();
 	}
 
 	accountBtn() {
-		if (this.accService.getUserInSession() !== undefined)
+		if (getUserInSession() !== undefined)
 			this.router.navigate(['/account']);
 		else
 			this.router.navigate(['/login']);
 	}
+
 }
