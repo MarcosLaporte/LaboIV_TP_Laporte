@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import arrayShuffle from 'array-shuffle';
+import { Score } from 'src/app/classes/score';
 import { TriviaObj } from 'src/app/classes/trivia-obj';
+import { User } from 'src/app/classes/user';
 import { TriviaApiService } from 'src/app/services/games/trivia-api.service';
-import { Loader, Toast } from 'src/environments/environment';
+import { UtilService } from 'src/app/services/games/util.service';
+import { Loader, Toast, getUserInSession } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,11 +15,20 @@ import Swal from 'sweetalert2';
 	styleUrls: ['./trivia.component.css']
 })
 export class TriviaComponent {
+	user: any;
 	triviaArr: Array<TriviaObj> = [];
 	currentTrivia: TriviaObj | any;
 	questionNum: number = 0;
 
-	constructor(private triviaService: TriviaApiService, private router: Router) { }
+	constructor(private triviaService: TriviaApiService, private utilService: UtilService, private router: Router) {
+		const usr = getUserInSession();
+		if (usr !== undefined)
+			this.user = usr;
+		else {
+			Toast.fire({ icon: 'error', title: 'Error!', text: 'No user in session.', background: '#f27474' });
+			router.navigate(['/login']);
+		}
+	}
 
 	score: number = 0;
 	headerDisplaySty: string = 'fixed';
@@ -46,15 +58,15 @@ export class TriviaComponent {
 			confirmButtonText: 'Easy',
 			confirmButtonColor: 'gray',
 			focusConfirm: false,
-			
+
 			showDenyButton: true,
 			denyButtonText: 'Medium',
 			denyButtonColor: 'green',
-			
+
 			showCancelButton: true,
 			cancelButtonText: 'Hard',
 			cancelButtonColor: 'red',
-			
+
 			showLoaderOnConfirm: true,
 			allowEscapeKey: false,
 			allowOutsideClick: false,
@@ -69,7 +81,7 @@ export class TriviaComponent {
 	}
 
 	async newQuiz() {
-		Loader.fire({title: 'Getting quiz...'});
+		Loader.fire({ title: 'Getting quiz...' });
 		await this.triviaService.getQuiz(this.difficulty)
 			.then((data) => {
 				for (const trivia of data.results) {
@@ -86,28 +98,19 @@ export class TriviaComponent {
 		Loader.close();
 	}
 
-	pickAns(answer: string) {
+	async pickAns(answer: string) {
 		const correctAnswer = TriviaComponent.getCorrectAnswer(this.currentTrivia);
 		if (answer == correctAnswer) {
 			this.score++;
 			Toast.fire({ icon: 'success', title: 'Correct!', background: '#a5dc86' });
 			this.nextQuestion();
 		} else {
-			Swal.fire({
-				icon: 'error',
-				title: 'You lost!',
-				text: `Right answer was: '${correctAnswer}'.`,
-				confirmButtonText: 'New game',
-				showCancelButton: true,
-				cancelButtonText: 'Home',
-				allowEscapeKey: false,
-				allowOutsideClick: false
-			}).then((res) => {
-				if (res.isConfirmed)
-					this.newGame();
-				else
-					this.router.navigate(['/home']);
-			});
+			const scoreObj = new Score(this.user, this.score, 'trivia', this.difficulty, new Date());
+			const newGameRes = await this.utilService.gameOver(scoreObj, {title: 'You lost!', text: `Right answer was: '${correctAnswer}'.`, icon: 'error'});
+			if (newGameRes)
+				this.newGame();
+			else
+				this.router.navigate(['/home']);
 		}
 	}
 

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Score } from 'src/app/classes/score';
+import { UtilService } from 'src/app/services/games/util.service';
 import { WordsApiService } from 'src/app/services/games/words-api.service';
-import { Loader } from 'src/environments/environment';
-import Swal from 'sweetalert2';
+import { Loader, Toast, getUserInSession } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-hangman',
@@ -11,6 +12,7 @@ import Swal from 'sweetalert2';
 })
 
 export class HangmanComponent {
+	user: any;
 	imgNumber = 0;
 	protected secretWrd: string = "";
 	protected definition: string = "";
@@ -19,7 +21,15 @@ export class HangmanComponent {
 	score: number = 0;
 	newGameFlag: boolean = false;
 
-	constructor(private router: Router, private wordsService: WordsApiService) { }
+	constructor(private wordsService: WordsApiService, private utilService: UtilService, private router: Router) {
+		const usr = getUserInSession();
+		if (usr !== undefined)
+			this.user = usr;
+		else {
+			router.navigate(['/login']);
+			Toast.fire({ icon: 'error', title: 'Error!', text: 'No user in session.', background: '#f27474' });
+		}
+	}
 
 	headerDisplaySty: string = 'fixed';
 	navbarDisplaySty: string = 'none';
@@ -33,7 +43,7 @@ export class HangmanComponent {
 		this.wordDisplayVal = '';
 		this.wrongGuesses = [];
 
-		Loader.fire({title: 'Loading new word...'});
+		Loader.fire({ title: 'Loading new word...' });
 		await this.getWordAndDef();
 		Loader.close();
 
@@ -66,24 +76,16 @@ export class HangmanComponent {
 			this.wrongGuess($event);
 	}
 
-	private rightGuess(letter: string) {
+	private async rightGuess(letter: string) {
 		this.addLetter(letter);
 		if (this.wordDisplayVal === this.secretWrd) {
 			this.score++;
-			Swal.fire({
-				icon: 'success',
-				title: 'You won!',
-				text: `With ${this.wrongGuesses.length} wrong guesses.`,
-				confirmButtonText: 'New game',
-				focusConfirm: true,
-				showCancelButton: true,
-				cancelButtonText: 'Home'
-			}).then(async (res) => {
-				if (res.isConfirmed)
-					await this.newGame();
-				else
-					this.router.navigate(['/home']);
-			});
+			const scoreObj = new Score(this.user, this.score, 'hangman', 'default', new Date());
+			const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You won!', text: `With ${this.wrongGuesses.length} wrong guesses.`, icon: 'success' });
+			if (newGameRes)
+				await this.newGame();
+			else
+				this.router.navigate(['/home']);
 		}
 	}
 
@@ -102,25 +104,18 @@ export class HangmanComponent {
 		this.wordDisplayVal = wordAux;
 	}
 
-	private wrongGuess(letter: string) {
+	private async wrongGuess(letter: string) {
 		this.wrongGuesses.push(letter);
 		if (this.imgNumber < 6) {
 			this.imgNumber++;
 			this.setImage();
 			if (this.imgNumber === 6) {
-				Swal.fire({
-					icon: 'error',
-					title: 'You lost!',
-					text: `You have no attempts left. The word was: ${this.secretWrd}.`,
-					confirmButtonText: 'New game',
-					showCancelButton: true,
-					cancelButtonText: 'Home'
-				}).then(async (res) => {
-					if (res.isConfirmed)
-						await this.newGame();
-					else
-						this.router.navigate(['/home']);
-				});
+				const scoreObj = new Score(this.user, this.score, 'hangman', 'default', new Date());
+				const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You lost!', text: `You have no attempts left. The word was: ${this.secretWrd}.`, icon: 'error' });
+				if (newGameRes)
+					await this.newGame();
+				else
+					this.router.navigate(['/home']);
 			}
 		}
 	}

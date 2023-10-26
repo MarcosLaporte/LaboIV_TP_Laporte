@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import arrayShuffle from 'array-shuffle';
 import { daltonize, RGBColor } from 'daltonize';
-import { Toast } from 'src/environments/environment';
-import Swal from 'sweetalert2';
+import { Score } from 'src/app/classes/score';
+import { UtilService } from 'src/app/services/games/util.service';
+import { getUserInSession, Toast } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-color-test',
@@ -11,11 +12,19 @@ import Swal from 'sweetalert2';
 	styleUrls: ['./color-test.component.css']
 })
 export class ColorTestComponent {
-	baseColor: string = '';
+	user: any;
 	currentPalette: string[] = [];
 	private diffColor: string = '';
 
-	constructor(private router: Router) { }
+	constructor(private utilService: UtilService, private router: Router) {
+		const usr = getUserInSession();
+		if (usr !== undefined)
+			this.user = usr;
+		else {
+			router.navigate(['/login']);
+			Toast.fire({ icon: 'error', title: 'Error!', text: 'No user in session.', background: '#f27474' });
+		}
+	}
 
 	score: number = 0;
 	headerDisplaySty: string = 'fixed';
@@ -27,25 +36,23 @@ export class ColorTestComponent {
 		this.navbarDisplaySty = 'block';
 		this.gameDisplaySty = 'block';
 
-		this.baseColor = '';
 		this.currentPalette = this.newPalette();
 		this.score = 0;
-
 	}
 
 	newPalette(): Array<string> {
-		this.currentPalette = [];
+		const newPalette = [];
 		const baseColorRGB: number[] = this.generateRandomColor();
 		const diffColorRGB: number[] = daltonize(baseColorRGB as RGBColor, "protanope");
 
-		this.baseColor = `rgb(${baseColorRGB[0]}, ${baseColorRGB[1]}, ${baseColorRGB[2]})`;
+		const baseColor = `rgb(${baseColorRGB[0]}, ${baseColorRGB[1]}, ${baseColorRGB[2]})`;
 		this.diffColor = `rgb(${diffColorRGB[0]}, ${diffColorRGB[1]}, ${diffColorRGB[2]})`;
 		for (let i = 0; i < 8; i++) {
-			this.currentPalette.push(this.baseColor);
+			newPalette.push(baseColor);
 		}
-		this.currentPalette.push(this.diffColor);
+		newPalette.push(this.diffColor);
 
-		return arrayShuffle(this.currentPalette);
+		return arrayShuffle(newPalette);
 	}
 
 	generateRandomColor(): number[] {
@@ -55,26 +62,19 @@ export class ColorTestComponent {
 		return [r, g, b];
 	}
 
-	pickColor(colorPicked: string) {
+	async pickColor(colorPicked: string) {
 		if (colorPicked == this.diffColor) {
 			this.score++;
 			Toast.fire({ icon: 'success', title: 'Correct!', background: '#a5dc86' });
 			this.currentPalette = this.newPalette();
 		} else {
-			Swal.fire({
-				icon: 'error',
-				title: 'You lost!',
-				confirmButtonText: 'New game',
-				showCancelButton: true,
-				cancelButtonText: 'Home',
-				allowEscapeKey: false,
-				allowOutsideClick: false
-			}).then((res) => {
-				if (res.isConfirmed)
-					this.newGame();
-				else
-					this.router.navigate(['/home']);
-			});
+			const scoreObj = new Score(this.user, this.score, 'color-test', 'default', new Date());
+			const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You lost!', icon: 'error' });
+			if (newGameRes)
+				this.newGame();
+			else
+				this.router.navigate(['/home']);
 		}
 	}
+
 }

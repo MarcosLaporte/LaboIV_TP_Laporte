@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardsApiService } from 'src/app/services/games/cards-api.service';
-import Swal from 'sweetalert2';
-import { Loader, Toast } from 'src/environments/environment';
+import { Loader, Toast, getUserInSession } from 'src/environments/environment';
+import { UtilService } from 'src/app/services/games/util.service';
+import { Score } from 'src/app/classes/score';
 
 @Component({
 	selector: 'app-hi-or-lo',
@@ -10,12 +11,21 @@ import { Loader, Toast } from 'src/environments/environment';
 	styleUrls: ['./hi-or-lo.component.css']
 })
 export class HiOrLoComponent {
+	user: any;
 	score: number = 0;
 	cardImg: string = "../../../../assets/card-joker.jpg";
 	currentCardVal = 0;
 	cardsLeft: number = 50;
 
-	constructor(private cardsService: CardsApiService, private router: Router) { }
+	constructor(private cardsService: CardsApiService, private utilService: UtilService, private router: Router) {
+		const usr = getUserInSession();
+		if (usr !== undefined)
+			this.user = usr;
+		else {
+			router.navigate(['/login']);
+			Toast.fire({ icon: 'error', title: 'Error!', text: 'No user in session.', background: '#f27474' });
+		}
+	}
 
 	headerDisplaySty: string = 'fixed';
 	navbarDisplaySty: string = 'none';
@@ -28,7 +38,7 @@ export class HiOrLoComponent {
 		this.gameDisplaySty = 'grid';
 
 		this.flipCard = true;
-		Loader.fire({title: 'Loading deck of cards...'});
+		Loader.fire({ title: 'Loading deck of cards...' });
 		await this.cardsService.shuffleDeck();
 		this.score = 0;
 		this.cardsLeft = 50;
@@ -44,7 +54,7 @@ export class HiOrLoComponent {
 
 	async checkGuess($event: any) {
 		this.flipCard = true;
-		Loader.fire({title: 'Checking values...'});
+		Loader.fire({ title: 'Checking values...' });
 
 		await this.cardsService.getNextCard()
 			.then((data) => {
@@ -66,27 +76,18 @@ export class HiOrLoComponent {
 					}
 
 					this.currentCardVal = nextCardVal;
-					if (this.cardsLeft == 0) this.gameOver();
+					if (this.cardsLeft == 0) this.gameOver;
 				}
 				else this.gameOver();
 			});
 	}
 
-	gameOver() {
-		Swal.fire({
-			icon: 'success',
-			title: 'GAME OVER',
-			text: `You scored ${this.score} points.`,
-			confirmButtonText: 'New game',
-			focusConfirm: true,
-			showCancelButton: true,
-			cancelButtonText: 'Home',
-			allowOutsideClick: false
-		}).then((res) => {
-			if (res.isConfirmed)
-				this.newGame();
-			else
-				this.router.navigate(['/home']);
-		});
+	private async gameOver() {
+		const scoreObj = new Score(this.user, this.score, 'hi-lo', 'default', new Date());
+		const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'GAME OVER', text: `You scored '${this.score}' points!`, icon: 'info'});
+		if (newGameRes)
+			this.newGame();
+		else
+			this.router.navigate(['/home']);
 	}
 }
