@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { getUserInSession } from 'src/environments/environment';
 
 @Component({
@@ -8,18 +7,10 @@ import { getUserInSession } from 'src/environments/environment';
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	constructor(private router: Router) {}
+	constructor() {}
 	title = 'TP_Laporte';
 
 	getUser(){
 		return getUserInSession();
 	}
-
-	accountBtn() {
-		if (getUserInSession() !== undefined)
-			this.router.navigate(['/account']);
-		else
-			this.router.navigate(['/login']);
-	}
-
 }

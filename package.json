@@ -29,7 +29,6 @@
     "sweetalert2": "^11.6.13",
     "tslib": "^2.3.0",
     "unique-names-generator": "^4.7.1",
-    "validator": "^13.11.0",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
