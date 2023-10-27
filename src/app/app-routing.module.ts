@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { ErrorComponent } from './components/error/error.component';
 import { AccountComponent } from './components/account/account.component';
+import { SurveyComponent } from './components/survey/survey.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
 	{ path: 'about', component: AboutComponent },
 	{ path: 'account', component: AccountComponent },
 	{ path: 'games', loadChildren: () => import('./games-module/games.module').then(m => m.GamesModule) },
+	{ path: 'survey', component: SurveyComponent },
 	{ path: '**', component: ErrorComponent },
 ];
 

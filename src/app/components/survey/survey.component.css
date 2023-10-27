@@ -1,0 +1,7 @@
+.list-group-item:hover {
+	cursor: pointer;
+	z-index: 1;
+  color: var(--bs-list-group-action-hover-color);
+  text-decoration: none;
+  background-color: var(--bs-list-group-action-hover-bg);
+}
