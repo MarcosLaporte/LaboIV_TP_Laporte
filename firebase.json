@@ -1,23 +1,16 @@
 {
-  "hosting": [
-    {
-      "public": "dist/tp-laporte",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
-    },
-    {
-      "target": "TP_Laporte",
-      "source": ".",
-      "frameworksBackend": {}
-    }
-  ]
+	"hosting": {
+		"public": "dist/tp-laporte",
+		"ignore": [
+			"firebase.json",
+			"**/.*",
+			"**/node_modules/**"
+		],
+		"rewrites": [
+			{
+				"source": "**",
+				"destination": "/index.html"
+			}
+		]
+	}
 }

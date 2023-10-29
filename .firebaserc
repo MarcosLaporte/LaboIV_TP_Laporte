@@ -1,14 +1,5 @@
 {
   "projects": {
     "default": "sala-de-juegos-111655"
-  },
-  "targets": {
-    "sala-de-juegos-111655": {
-      "hosting": {
-        "TP_Laporte": [
-          "sala-de-juegos-111655"
-        ]
-      }
-    }
   }
 }
