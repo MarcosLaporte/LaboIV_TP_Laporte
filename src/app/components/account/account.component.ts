@@ -1,7 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-import { AccountService } from 'src/app/services/account.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -13,17 +12,12 @@ export class AccountComponent {
 	username: string = "";
 	email: string = "";
 
-	constructor(private router: Router, private accService: AccountService) {
-		let usrAux = "USERNAME_NOT_FOUND";
-		let emAux = "EMAIL_ADD_NOT_FOUND";
-		const tmpUser = inject(AuthService).getUserInSession();
-		if (tmpUser !== undefined) {
-			usrAux = tmpUser.username;
-			emAux = tmpUser.email;
+	constructor(private router: Router, private auth: AuthService) {
+		const loggedUser = auth.loggedUser;
+		if (loggedUser !== undefined) {
+			this.username = loggedUser ? loggedUser.username : "USERNAME_NOT_FOUND";
+			this.email = loggedUser ? loggedUser.email : "EMAIL_ADD_NOT_FOUND";
 		}
-
-		this.username = usrAux;
-		this.email = emAux;
 	}
 
 	signOut() {
@@ -37,7 +31,7 @@ export class AccountComponent {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire('Logged out!', '', 'success');
-				this.accService.logOutFromSession();
+				this.auth.logOutFromSession();
 				this.router.navigateByUrl('home');
 			}
 		});

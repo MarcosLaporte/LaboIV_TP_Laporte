@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AccountService } from 'src/app/services/account.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
 	selector: 'app-login',
@@ -11,7 +11,7 @@ import { AccountService } from 'src/app/services/account.service';
 export class LoginComponent {
 	loginForm: FormGroup;
 
-	constructor(private router: Router, private accountService: AccountService, private fb: FormBuilder) {
+	constructor(private router: Router, private auth: AuthService, private fb: FormBuilder) {
 		this.loginForm = fb.group({
 			email: [
 				'',
@@ -33,7 +33,7 @@ export class LoginComponent {
 		const email = this.loginForm.get('email')?.value;
 		const password = this.loginForm.get('password')?.value;
 
-		const userExists = this.accountService.signIn(email, password);
+		const userExists = this.auth.signIn(email, password);
 		userExists.then((existe) => { if (existe) this.router.navigateByUrl('home') })
 	}
 

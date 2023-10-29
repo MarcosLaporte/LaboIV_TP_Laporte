@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AccountService } from 'src/app/services/account.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
 
 @Component({
@@ -13,7 +13,7 @@ import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generato
 export class SignupComponent {
 	signUpForm: FormGroup;
 
-	constructor(private router: Router, private accountService: AccountService, private fb: FormBuilder) {
+	constructor(private router: Router, private auth: AuthService, private fb: FormBuilder) {
 		this.signUpForm = fb.group({
 			email: [
 				'',
@@ -68,7 +68,7 @@ export class SignupComponent {
 			style: 'upperCase',
 		});
 
-		this.accountService.usernameExists(username)
+		this.auth.usernameExists(username)
 			.then((existe) => {
 				if (existe)
 					this.newUsername();
@@ -83,8 +83,8 @@ export class SignupComponent {
 		const username = this.signUpForm.get('username')?.value;
 		const admin = this.signUpForm.get('admin')?.value;
 
-		this.accountService.saveUser(email, password, username, admin);
-		this.accountService.signIn(email, password)
+		this.auth.saveUser(email, password, username, admin);
+		this.auth.signIn(email, password)
 		this.router.navigateByUrl('home');
 	}
 }

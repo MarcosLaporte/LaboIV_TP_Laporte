@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Message } from '../classes/message';
 import { User } from '../classes/user';
 import { DatabaseService } from '../services/database.service';
@@ -21,15 +21,13 @@ export class ChatComponent {
 		this.dbService.traerNuevosMensajes(this.messages);
 	}
 
-	usrMsgStyle(user: User) {
-		const tmpUser = this.auth.getUserInSession();
-		return user.email === tmpUser?.email ? 'background-color: #48b0f7; color: #fff;' : '';
+	usrMsgStyle(msgUser: User) {
+		return msgUser.email === this.auth.loggedUser?.email ? 'background-color: #48b0f7; color: #fff;' : '';
 	}
 
 	sendMessage() {
-		const tmpUser = this.auth.getUserInSession();
-		if (tmpUser && this.msgText !== "") {
-			const msg = new Message(tmpUser, this.msgText);
+		if (this.auth.loggedUser && this.msgText !== "") {
+			const msg = new Message(this.auth.loggedUser, this.msgText);
 			this.dbService.agregarDatos('messages', msg);
 			this.msgText = "";
 		}

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import arrayShuffle from 'array-shuffle';
 import { Score } from 'src/app/classes/score';
@@ -15,14 +15,16 @@ import Swal from 'sweetalert2';
 	styleUrls: ['./trivia.component.css']
 })
 export class TriviaComponent {
-	user: any;
 	triviaArr: Array<TriviaObj> = [];
 	currentTrivia: TriviaObj | any;
 	questionNum: number = 0;
 
-	constructor(private triviaService: TriviaApiService, private utilService: UtilService, private router: Router) {
-		this.user = inject(AuthService).getUserInSession();
-	}
+	constructor(
+		private triviaService: TriviaApiService,
+		private utilService: UtilService,
+		private router: Router,
+		private auth: AuthService
+	) { }
 
 	score: number = 0;
 	headerDisplaySty: string = 'fixed';
@@ -99,12 +101,14 @@ export class TriviaComponent {
 			Toast.fire({ icon: 'success', title: 'Correct!', background: '#a5dc86' });
 			this.nextQuestion();
 		} else {
-			const scoreObj = new Score(this.user, this.score, 'trivia', this.difficulty, new Date());
-			const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You lost!', text: `Right answer was: '${correctAnswer}'.`, icon: 'error' });
-			if (newGameRes)
-				this.newGame();
-			else
-				this.router.navigateByUrl('home');
+			if (this.auth.loggedUser) {
+				const scoreObj = new Score(this.auth.loggedUser, this.score, 'trivia', this.difficulty, new Date());
+				const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You lost!', text: `Right answer was: '${correctAnswer}'.`, icon: 'error' });
+				if (newGameRes)
+					this.newGame();
+				else
+					this.router.navigateByUrl('home');
+			}
 		}
 	}
 

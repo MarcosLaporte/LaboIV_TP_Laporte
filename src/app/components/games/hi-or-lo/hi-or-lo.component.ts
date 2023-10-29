@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardsApiService } from 'src/app/services/games/cards-api.service';
 import { Loader, Toast } from 'src/environments/environment';
@@ -12,15 +12,17 @@ import { AuthService } from 'src/app/services/auth.service';
 	styleUrls: ['./hi-or-lo.component.css']
 })
 export class HiOrLoComponent {
-	user: any;
 	score: number = 0;
 	cardImg: string = "../../../../assets/card-joker.jpg";
 	currentCardVal = 0;
 	cardsLeft: number = 50;
 
-	constructor(private cardsService: CardsApiService, private utilService: UtilService, private router: Router) {
-		this.user = inject(AuthService).getUserInSession();
-	}
+	constructor(
+		private cardsService: CardsApiService,
+		private utilService: UtilService,
+		private router: Router,
+		private auth: AuthService
+	) { }
 
 	headerDisplaySty: string = 'fixed';
 	navbarDisplaySty: string = 'none';
@@ -48,7 +50,7 @@ export class HiOrLoComponent {
 	}
 
 	async checkGuess($event: any) {
-		this.flipCard = true;
+		this.flipCard = false;
 		Loader.fire({ title: 'Checking values...' });
 
 		await this.cardsService.getNextCard()
@@ -59,7 +61,6 @@ export class HiOrLoComponent {
 					const nextCardVal = this.cardsService.getCardValue(data.cards[0].value);
 					const cardDifVal = nextCardVal - this.currentCardVal;
 					Loader.close();
-					this.flipCard = false;
 
 					if (cardDifVal < 0 && $event.target.value == -1 || cardDifVal > 0 && $event.target.value == 1) {
 						this.score++;
@@ -75,14 +76,17 @@ export class HiOrLoComponent {
 				}
 				else this.gameOver();
 			});
+		this.flipCard = true;
 	}
 
 	private async gameOver() {
-		const scoreObj = new Score(this.user, this.score, 'hi-lo', 'default', new Date());
-		const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'GAME OVER', text: `You scored '${this.score}' points!`, icon: 'info'});
-		if (newGameRes)
-			this.newGame();
-		else
-			this.router.navigateByUrl('home');
+		if (this.auth.loggedUser) {
+			const scoreObj = new Score(this.auth.loggedUser, this.score, 'hi-lo', 'default', new Date());
+			const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'GAME OVER', text: `You scored '${this.score}' points!`, icon: 'info' });
+			if (newGameRes)
+				this.newGame();
+			else
+				this.router.navigateByUrl('home');
+		}
 	}
 }

@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Score } from 'src/app/classes/score';
 import { AuthService } from 'src/app/services/auth.service';
 import { UtilService } from 'src/app/services/games/util.service';
 import { WordsApiService } from 'src/app/services/games/words-api.service';
-import { Loader, Toast } from 'src/environments/environment';
+import { Loader } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-hangman',
@@ -13,7 +13,6 @@ import { Loader, Toast } from 'src/environments/environment';
 })
 
 export class HangmanComponent {
-	user: any;
 	imgNumber = 0;
 	protected secretWrd: string = "";
 	protected definition: string = "";
@@ -22,9 +21,12 @@ export class HangmanComponent {
 	score: number = 0;
 	newGameFlag: boolean = false;
 
-	constructor(private wordsService: WordsApiService, private utilService: UtilService, private router: Router) {
-		this.user = inject(AuthService).getUserInSession();
-	}
+	constructor(
+		private wordsService: WordsApiService,
+		private utilService: UtilService,
+		private router: Router,
+		private auth: AuthService
+	) { }
 
 	headerDisplaySty: string = 'fixed';
 	navbarDisplaySty: string = 'none';
@@ -75,12 +77,14 @@ export class HangmanComponent {
 		this.addLetter(letter);
 		if (this.wordDisplayVal === this.secretWrd) {
 			this.score++;
-			const scoreObj = new Score(this.user, this.score, 'hangman', 'default', new Date());
-			const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You won!', text: `With ${this.wrongGuesses.length} wrong guesses.`, icon: 'success' });
-			if (newGameRes)
-				await this.newGame();
-			else
-				this.router.navigateByUrl('home');
+			if (this.auth.loggedUser) {
+				const scoreObj = new Score(this.auth.loggedUser, this.score, 'hangman', 'default', new Date());
+				const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You won!', text: `With ${this.wrongGuesses.length} wrong guesses.`, icon: 'success' });
+				if (newGameRes)
+					await this.newGame();
+				else
+					this.router.navigateByUrl('home');
+			}
 		}
 	}
 
@@ -105,12 +109,14 @@ export class HangmanComponent {
 			this.imgNumber++;
 			this.setImage();
 			if (this.imgNumber === 6) {
-				const scoreObj = new Score(this.user, this.score, 'hangman', 'default', new Date());
-				const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You lost!', text: `You have no attempts left. The word was: ${this.secretWrd}.`, icon: 'error' });
-				if (newGameRes)
-					await this.newGame();
-				else
-					this.router.navigateByUrl('home');
+				if (this.auth.loggedUser) {
+					const scoreObj = new Score(this.auth.loggedUser, this.score, 'hangman', 'default', new Date());
+					const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You lost!', text: `You have no attempts left. The word was: ${this.secretWrd}.`, icon: 'error' });
+					if (newGameRes)
+						await this.newGame();
+					else
+						this.router.navigateByUrl('home');
+				}
 			}
 		}
 	}

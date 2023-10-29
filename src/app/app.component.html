@@ -5,12 +5,13 @@
 		<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 			<li class="nav-item"><a class="nav-link" routerLink="/home">Home</a></li>
 			<li class="nav-item"><a class="nav-link" routerLink="/about">About Me</a></li>
-			<li class="nav-item"><a class="nav-link" *ngIf="logged" routerLink="/survey">Survey</a></li>
-			<li class="nav-item"><a class="nav-link" *ngIf="logged" routerLink="/account">Account</a></li>
-			<li class="nav-item"><a class="nav-link" *ngIf="!logged" routerLink="/login">Sign In</a></li>
+			<li class="nav-item"><a class="nav-link" *ngIf="isLogged" routerLink="/survey">Survey</a></li>
+			<li class="nav-item"><a class="nav-link" *ngIf="isAdmin" routerLink="/surveyList">Survey List</a></li>
+			<li class="nav-item"><a class="nav-link" *ngIf="isLogged" routerLink="/account">Account</a></li>
+			<li class="nav-item"><a class="nav-link" *ngIf="!isLogged" routerLink="/login">Sign In</a></li>
 		</ul>
 	</div>
 </nav>
 
 <router-outlet></router-outlet>
-<app-chat *ngIf="logged"></app-chat>
+<app-chat *ngIf="isLogged"></app-chat>

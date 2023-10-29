@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 
@@ -8,11 +8,20 @@ import { AuthService } from './services/auth.service';
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	protected logged: boolean;
+	protected isLogged: boolean = false;
+	protected isAdmin: boolean = false;
 
-	constructor(private router: Router) {
-		this.logged = inject(AuthService).isLogged;
-		router.navigateByUrl(this.logged ? 'home' : 'login');
+	constructor(private router: Router, private auth: AuthService) { }
+
+	ngOnInit() {
+		this.auth.isLoggedObs.subscribe(logged => {
+			this.isLogged = logged;
+		});
+		this.auth.isAdminObs.subscribe(admin => {
+			this.isAdmin = admin;
+		});
+
+		this.router.navigateByUrl(this.isLogged ? 'home' : 'login');
 	}
 	title = 'TP_Laporte';
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import arrayShuffle from 'array-shuffle';
 import { daltonize, RGBColor } from 'daltonize';
@@ -13,13 +13,14 @@ import { Toast } from 'src/environments/environment';
 	styleUrls: ['./color-test.component.css']
 })
 export class ColorTestComponent {
-	user: any;
 	currentPalette: string[] = [];
 	private diffColor: string = '';
 
-	constructor(private utilService: UtilService, private router: Router) {
-		this.user = inject(AuthService).getUserInSession();
-	}
+	constructor(
+		private utilService: UtilService,
+		private router: Router,
+		private auth: AuthService
+	) { }
 
 	score: number = 0;
 	headerDisplaySty: string = 'fixed';
@@ -63,12 +64,14 @@ export class ColorTestComponent {
 			Toast.fire({ icon: 'success', title: 'Correct!', background: '#a5dc86' });
 			this.currentPalette = this.newPalette();
 		} else {
-			const scoreObj = new Score(this.user, this.score, 'color-test', 'default', new Date());
-			const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You lost!', icon: 'error' });
-			if (newGameRes)
-				this.newGame();
-			else
-				this.router.navigateByUrl('home');
+			if (this.auth.loggedUser) {
+				const scoreObj = new Score(this.auth.loggedUser, this.score, 'color-test', 'default', new Date());
+				const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You lost!', icon: 'error' });
+				if (newGameRes)
+					this.newGame();
+				else
+					this.router.navigateByUrl('home');
+			}
 		}
 	}
 

@@ -17,6 +17,7 @@ import { GamesModule } from './games-module/games.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ChatComponent } from './chat/chat.component';
 import { SurveyComponent } from './components/survey/survey.component';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 
 @NgModule({
 	declarations: [
@@ -39,6 +40,7 @@ import { SurveyComponent } from './components/survey/survey.component';
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideFirestore(() => getFirestore()),
 		GamesModule,
+		provideAuth(() => getAuth()),
 	],
 	providers: [],
 	bootstrap: [AppComponent]
