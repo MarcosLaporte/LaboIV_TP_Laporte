@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ChatComponent } from './chat/chat.component';
 import { SurveyComponent } from './components/survey/survey.component';
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { SurveyListComponent } from './components/survey-list/survey-list.component';
 
 @NgModule({
 	declarations: [
@@ -30,6 +31,7 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 		AccountComponent,
 		ChatComponent,
 		SurveyComponent,
+		SurveyListComponent,
 	],
 	imports: [
 		BrowserModule,

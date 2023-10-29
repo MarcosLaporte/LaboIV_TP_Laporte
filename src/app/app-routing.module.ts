@@ -9,6 +9,8 @@ import { AccountComponent } from './components/account/account.component';
 import { SurveyComponent } from './components/survey/survey.component';
 import { loggedGuard } from './guards/logged.guard';
 import { notLoggedGuard } from './guards/not-logged.guard';
+import { adminGuard } from './guards/admin.guard';
+import { SurveyListComponent } from './components/survey-list/survey-list.component';
 
 const routes: Routes = [
 	{
@@ -42,6 +44,11 @@ const routes: Routes = [
 		path: 'survey',
 		canActivate: [loggedGuard],
 		component: SurveyComponent
+	},
+	{
+		path: 'surveyList',
+		canActivate: [adminGuard],
+		component: SurveyListComponent
 	},
 	{ path: '**', component: ErrorComponent },
 ];

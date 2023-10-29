@@ -1,0 +1,34 @@
+<div class="container mt-4">
+	<table class="table align-middle mb-0 bg-white table-hover">
+		<thead class="bg-light">
+			<tr>
+				<th>User</th>
+				<th>Suggestion</th>
+				<th>Points & Fav game</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let survey of list">
+				<td class="col-md-3">
+					<div class="d-flex align-items-center">
+						<div class="ms-3">
+							<p class="fw-bold mb-0">{{survey.firstName}} {{survey.lastName}}</p>
+							<p class="text-muted mb-0">{{survey.email}}</p>
+						</div>
+					</div>
+				</td>
+				<td class="col-md-7">
+					<div class="ms-3">
+						<p class="fw-normal mb-0">{{survey.suggestion}}</p>
+					</div>
+				</td>
+				<td class="col-md-2">
+					<div class="ms-3">
+						<p class="fw-normal mb-0">{{survey.recommendation}} points</p>
+						<span class="badge badge-success rounded-pill d-inline text-uppercase">{{survey.favGame}}</span>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
