@@ -34,7 +34,7 @@ export class LoginComponent {
 		const password = this.loginForm.get('password')?.value;
 
 		const userExists = this.accountService.signIn(email, password);
-		userExists.then((existe) => { if (existe) this.router.navigate(['/home']) })
+		userExists.then((existe) => { if (existe) this.router.navigateByUrl('home') })
 	}
 
 	async quickFill() {

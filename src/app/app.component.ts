@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { getUserInSession } from 'src/environments/environment';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
 	selector: 'app-root',
@@ -7,10 +8,11 @@ import { getUserInSession } from 'src/environments/environment';
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	constructor() {}
-	title = 'TP_Laporte';
+	protected logged: boolean;
 
-	getUser(){
-		return getUserInSession();
+	constructor(private router: Router) {
+		this.logged = inject(AuthService).isLogged;
+		router.navigateByUrl(this.logged ? 'home' : 'login');
 	}
+	title = 'TP_Laporte';
 }

@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardsApiService } from 'src/app/services/games/cards-api.service';
-import { Loader, Toast, getUserInSession } from 'src/environments/environment';
+import { Loader, Toast } from 'src/environments/environment';
 import { UtilService } from 'src/app/services/games/util.service';
 import { Score } from 'src/app/classes/score';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
 	selector: 'app-hi-or-lo',
@@ -18,13 +19,7 @@ export class HiOrLoComponent {
 	cardsLeft: number = 50;
 
 	constructor(private cardsService: CardsApiService, private utilService: UtilService, private router: Router) {
-		const usr = getUserInSession();
-		if (usr !== undefined)
-			this.user = usr;
-		else {
-			router.navigate(['/login']);
-			Toast.fire({ icon: 'error', title: 'Error!', text: 'No user in session.', background: '#f27474' });
-		}
+		this.user = inject(AuthService).getUserInSession();
 	}
 
 	headerDisplaySty: string = 'fixed';
@@ -88,6 +83,6 @@ export class HiOrLoComponent {
 		if (newGameRes)
 			this.newGame();
 		else
-			this.router.navigate(['/home']);
+			this.router.navigateByUrl('home');
 	}
 }

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import Swal, { SweetAlertIcon, SweetAlertOptions } from 'sweetalert2';
+import Swal, { SweetAlertOptions } from 'sweetalert2';
 import { DatabaseService } from '../database.service';
 import { Score } from 'src/app/classes/score';
-import { getUserInSession } from 'src/environments/environment';
 
 @Injectable({
 	providedIn: 'root'

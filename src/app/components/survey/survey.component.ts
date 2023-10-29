@@ -112,7 +112,7 @@ export class SurveyComponent {
 			if (res.isConfirmed)
 				location.reload();
 			else
-				this.router.navigate(['/home']);
+				this.router.navigateByUrl('home');
 		});
 	}
 

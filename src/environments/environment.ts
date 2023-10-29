@@ -1,4 +1,3 @@
-import { User } from "src/app/classes/user";
 import Swal from "sweetalert2";
 
 export const environment = {
@@ -27,11 +26,3 @@ export const Loader = Swal.mixin({
 		Swal.showLoading();
 	}
 });
-
-export const getUserInSession = () => {
-	const ss = sessionStorage.getItem('loggedUser');
-	if (ss !== null)
-		return JSON.parse(ss) as User;
-
-	return undefined;
-}

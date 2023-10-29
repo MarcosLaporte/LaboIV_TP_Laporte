@@ -85,6 +85,6 @@ export class SignupComponent {
 
 		this.accountService.saveUser(email, password, username, admin);
 		this.accountService.signIn(email, password)
-		this.router.navigate(['/home']);
+		this.router.navigateByUrl('home');
 	}
 }

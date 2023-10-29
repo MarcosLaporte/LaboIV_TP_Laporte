@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Score } from 'src/app/classes/score';
+import { AuthService } from 'src/app/services/auth.service';
 import { UtilService } from 'src/app/services/games/util.service';
 import { WordsApiService } from 'src/app/services/games/words-api.service';
-import { Loader, Toast, getUserInSession } from 'src/environments/environment';
+import { Loader, Toast } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-hangman',
@@ -22,13 +23,7 @@ export class HangmanComponent {
 	newGameFlag: boolean = false;
 
 	constructor(private wordsService: WordsApiService, private utilService: UtilService, private router: Router) {
-		const usr = getUserInSession();
-		if (usr !== undefined)
-			this.user = usr;
-		else {
-			router.navigate(['/login']);
-			Toast.fire({ icon: 'error', title: 'Error!', text: 'No user in session.', background: '#f27474' });
-		}
+		this.user = inject(AuthService).getUserInSession();
 	}
 
 	headerDisplaySty: string = 'fixed';
@@ -85,7 +80,7 @@ export class HangmanComponent {
 			if (newGameRes)
 				await this.newGame();
 			else
-				this.router.navigate(['/home']);
+				this.router.navigateByUrl('home');
 		}
 	}
 
@@ -115,7 +110,7 @@ export class HangmanComponent {
 				if (newGameRes)
 					await this.newGame();
 				else
-					this.router.navigate(['/home']);
+					this.router.navigateByUrl('home');
 			}
 		}
 	}

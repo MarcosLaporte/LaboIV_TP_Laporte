@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import arrayShuffle from 'array-shuffle';
 import { daltonize, RGBColor } from 'daltonize';
 import { Score } from 'src/app/classes/score';
+import { AuthService } from 'src/app/services/auth.service';
 import { UtilService } from 'src/app/services/games/util.service';
-import { getUserInSession, Toast } from 'src/environments/environment';
+import { Toast } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-color-test',
@@ -17,13 +18,7 @@ export class ColorTestComponent {
 	private diffColor: string = '';
 
 	constructor(private utilService: UtilService, private router: Router) {
-		const usr = getUserInSession();
-		if (usr !== undefined)
-			this.user = usr;
-		else {
-			router.navigate(['/login']);
-			Toast.fire({ icon: 'error', title: 'Error!', text: 'No user in session.', background: '#f27474' });
-		}
+		this.user = inject(AuthService).getUserInSession();
 	}
 
 	score: number = 0;
@@ -73,7 +68,7 @@ export class ColorTestComponent {
 			if (newGameRes)
 				this.newGame();
 			else
-				this.router.navigate(['/home']);
+				this.router.navigateByUrl('home');
 		}
 	}
 

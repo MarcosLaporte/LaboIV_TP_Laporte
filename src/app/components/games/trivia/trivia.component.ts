@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import arrayShuffle from 'array-shuffle';
 import { Score } from 'src/app/classes/score';
 import { TriviaObj } from 'src/app/classes/trivia-obj';
-import { User } from 'src/app/classes/user';
+import { AuthService } from 'src/app/services/auth.service';
 import { TriviaApiService } from 'src/app/services/games/trivia-api.service';
 import { UtilService } from 'src/app/services/games/util.service';
-import { Loader, Toast, getUserInSession } from 'src/environments/environment';
+import { Loader, Toast } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -21,13 +21,7 @@ export class TriviaComponent {
 	questionNum: number = 0;
 
 	constructor(private triviaService: TriviaApiService, private utilService: UtilService, private router: Router) {
-		const usr = getUserInSession();
-		if (usr !== undefined)
-			this.user = usr;
-		else {
-			Toast.fire({ icon: 'error', title: 'Error!', text: 'No user in session.', background: '#f27474' });
-			router.navigate(['/login']);
-		}
+		this.user = inject(AuthService).getUserInSession();
 	}
 
 	score: number = 0;
@@ -106,11 +100,11 @@ export class TriviaComponent {
 			this.nextQuestion();
 		} else {
 			const scoreObj = new Score(this.user, this.score, 'trivia', this.difficulty, new Date());
-			const newGameRes = await this.utilService.gameOver(scoreObj, {title: 'You lost!', text: `Right answer was: '${correctAnswer}'.`, icon: 'error'});
+			const newGameRes = await this.utilService.gameOver(scoreObj, { title: 'You lost!', text: `Right answer was: '${correctAnswer}'.`, icon: 'error' });
 			if (newGameRes)
 				this.newGame();
 			else
-				this.router.navigate(['/home']);
+				this.router.navigateByUrl('home');
 		}
 	}
 

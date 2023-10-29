@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { getUserInSession } from 'src/environments/environment';
+import { AuthService } from '../services/auth.service';
+import { Toast } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-games',
@@ -8,12 +9,13 @@ import { getUserInSession } from 'src/environments/environment';
 	styleUrls: ['./games.component.css'],
 })
 export class GamesComponent {
-	constructor(private router: Router) { }
+	constructor(private router: Router, private auth: AuthService) { }
 
 	selecGame(game: string) {
-		if (getUserInSession() !== undefined)
-			this.router.navigate(['games/' + game]);
-		else
-			this.router.navigate(['/login']);
+		const user = this.auth.getUserInSession();
+		if (user === undefined) {
+			Toast.fire({icon: 'error', title: 'Error', text: 'You must be signed in to play.', background: '#f27474'});
+			this.router.navigateByUrl('login');
+		} else this.router.navigateByUrl(`games/${game}`);
 	}
 }
