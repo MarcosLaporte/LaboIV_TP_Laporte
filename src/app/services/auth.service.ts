@@ -37,14 +37,27 @@ export class AuthService {
 		return this._loggedUserSub.getValue();
 	}
 	public set loggedUser(value: User | undefined) {
+		if (value !== undefined)
+			sessionStorage.setItem('loggedUser', JSON.stringify(value));
+		else
+			sessionStorage.removeItem('loggedUser');
+
 		this._loggedUserSub.next(value);
 	}
 	//#endregion
 
 	constructor(private dbService: DatabaseService) {
-		this.isLogged = false;
-		this.loggedUser = undefined;
+		this.loggedUser = this.getUserInSession();
+		this.isLogged = this.loggedUser !== undefined;
 		this.isAdmin = false;
+	}
+	
+	private getUserInSession(): User | undefined {
+		const ss = sessionStorage.getItem('loggedUser');
+		if (ss !== null)
+			return JSON.parse(ss) as User;
+
+		return undefined;
 	}
 
 	logOutFromSession() {
