@@ -81,7 +81,7 @@ export class SurveyComponent {
 		const validGames = ['hangman', 'hi-lo', 'trivia', 'color-test', 'none'];
 
 		if (!validGames.includes(game)) {
-			return { validGame: true };
+			return { invalidGame: true };
 		}
 
 		return null;
